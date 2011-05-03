@@ -45,6 +45,10 @@
 			<name>Emiel Ackermann</name>
 		</developer>
 	</developers>
+	<scm>
+		<connection>scm:svn:https://xmlworker.svn.sourceforge.net/svnroot/xmlworker/trunk </connection>
+		<url>http://xmlworker.svn.sourceforge.net/viewvc/xmlworker</url>
+	</scm>
 	<dependencies>
 		<dependency>
 			<groupId>com.itextpdf</groupId>
