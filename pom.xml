@@ -8,7 +8,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.itextpdf.tool</groupId>
 	<artifactId>xmlworker</artifactId>
-	<name>XMLWorker</name>
+	<name>iText XML Worker</name>
 	<version>0.0.2-SNAPSHOT</version>
 	<description>Parses XML to PDF, with CSS support, using iText</description>
 	<licenses>
@@ -17,6 +17,7 @@
 			<url>http://www.fsf.org/licensing/licenses/agpl-3.0.html</url>
 		</license>
 	</licenses>
+	<url>http://www.itextpdf.com/</url>
 	<mailingLists>
 		<mailingList>
 			<name>iText Questions</name>
@@ -46,7 +47,7 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:https://xmlworker.svn.sourceforge.net/svnroot/xmlworker/trunk </connection>
+		<connection>scm:svn:https://xmlworker.svn.sourceforge.net/svnroot/xmlworker/trunk</connection>
 		<url>http://xmlworker.svn.sourceforge.net/viewvc/xmlworker</url>
 	</scm>
 	<dependencies>
