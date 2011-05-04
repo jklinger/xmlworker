@@ -132,7 +132,7 @@ public abstract class AbstractTagProcessor implements TagProcessor {
 	 * 
 	 * @param tag
 	 * @param currentContent
-	 * @return
+	 * @return a List containing iText Element objects
 	 */
 	public List<Element> end(final Tag tag, final List<Element> currentContent) {
 		return new ArrayList<Element>(0);
