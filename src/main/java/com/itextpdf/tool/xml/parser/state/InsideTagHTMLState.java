@@ -1,5 +1,5 @@
 /*
- * $Id: XMLParser.java 28 2011-05-05 20:33:36Z redlab_b $
+ * $Id$
  *
  * This file is part of the iText (R) project.
  * Copyright (c) 1998-2011 1T3XT BVBA
