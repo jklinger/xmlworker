@@ -41,62 +41,20 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml.html.table;
+package com.itextpdf.tool.xml.parser;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.itextpdf.text.Element;
-import com.itextpdf.tool.xml.AbstractTagProcessor;
-import com.itextpdf.tool.xml.Tag;
-import com.itextpdf.tool.xml.css.apply.HtmlCellCssApplier;
-import com.itextpdf.tool.xml.css.apply.NoNewLineParagraphCssApplier;
-import com.itextpdf.tool.xml.html.HTMLUtils;
-import com.itextpdf.tool.xml.html.pdfelement.HtmlCell;
-import com.itextpdf.tool.xml.html.pdfelement.NoNewLineParagraph;
 /**
  * @author redlab_b
  *
  */
-public class TableData extends AbstractTagProcessor {
+public interface XMLParserConfig {
 
-    /* (non-Javadoc)
-     * @see com.itextpdf.tool.xml.TagProcessor#content(com.itextpdf.tool.xml.Tag, java.util.List, com.itextpdf.text.Document, java.lang.String)
-     */
-    @Override
-	public List<Element> content(final Tag tag, final String content) {
-    	String sanitized = HTMLUtils.sanitizeInline(content);
-    	List<Element> l = new ArrayList<Element>(1);
-    	if (sanitized.length() > 0) {
-    		l.add(new NoNewLineParagraphCssApplier(configuration).apply(new NoNewLineParagraph(sanitized), tag));
-    	}
-    	return l;
-    }
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.itextpdf.tool.xml.TagProcessor#endElement(com.itextpdf.tool.xml.Tag,
-	 * java.util.List, com.itextpdf.text.Document)
+	/**
+	 * @return a list with XMLParserListeners or an empty list of none defined by configuration.
 	 */
-	@Override
-	public List<Element> end(final Tag tag, final List<Element> currentContent) {
-		HtmlCell cell = new HtmlCell();
-		List<Element> l = new ArrayList<Element>(1);
-		for (Element e : currentContent) {
-			cell.addElement(e);
-		}
-		l.add(new HtmlCellCssApplier(configuration).apply(cell, tag));
-		return l;
-	}
+	List<XMLParserListener> listeners();
 
-    /* (non-Javadoc)
-     * @see com.itextpdf.tool.xml.TagProcessor#isStackOwner()
-     */
-    @Override
-	public boolean isStackOwner() {
-        return true;
-    }
 
 }

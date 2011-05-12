@@ -83,22 +83,20 @@ public class ParserListenerWriter implements XMLParserListener {
 		writer.append(content);
 	}
 
-	public void startElement(final String currentTag, final Map<String, String> attributes, final String ns) {
-		String myns = (ns.length() > 0)?ns+":":ns;
+	public void startElement(final String currentTag, final Map<String, String> attributes) {
 		if( attributes.size() >0) {
-			writer.append("<").append(myns ).append(currentTag).append(" ");
+			writer.append("<"+currentTag+ " ");
 			for (Entry<String,String> e : attributes.entrySet()) {
 				writer.append(e.getKey()).append("=\"").append(e.getValue()).append("\"");
 			}
 			writer.append('>');
 		} else {
-			writer.append('<').append(myns).append(currentTag).append('>');
+			writer.append('<').append(currentTag).append('>');
 		}
 	}
 
-	public void endElement(final String curentTag, final String ns) {
-		String myns = (ns.length() > 0)?ns+":":ns;
-		writer.append("</").append(myns).append(curentTag).append('>');
+	public void endElement(final String curentTag) {
+		writer.append("</").append(curentTag).append('>');
 		if (formatted) {
 			writer.append((char) Character.LINE_SEPARATOR);
 		}

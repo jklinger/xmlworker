@@ -51,7 +51,6 @@ import java.util.Map;
 
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
-import com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler;
 import com.itextpdf.text.xml.simpleparser.SimpleXMLParser;
 import com.itextpdf.tool.xml.exceptions.NoTagProcessorException;
 import com.itextpdf.tool.xml.exceptions.RuntimeWorkerException;
@@ -59,12 +58,11 @@ import com.itextpdf.tool.xml.html.HTMLUtils;
 
 /**
  * The implementation of the XMLWorker.
- * For legacy purposes this class also implements {@link SimpleXMLDocHandler}
- *
+ * 
  * @author redlab_b
- *
+ * 
  */
-public class XMLWorkerImpl implements XMLWorker, SimpleXMLDocHandler {
+public class XMLWorkerImpl implements XMLWorker {
 
 	private Tag current;
 	private final List<Element> currentContent;
@@ -102,15 +100,15 @@ public class XMLWorkerImpl implements XMLWorker, SimpleXMLDocHandler {
 	 * {@link TagProcessorFactory}. If none found and acceptUknown is false a {@link NoTagProcessorException} is thrown.
 	 * If found the TagProcessors startElement is called.
 	 */
-	public void startElement(String tag, final Map<String, String> attr, final String ns) {
+	public void startElement(String tag, final Map<String, String> h) {
 		if (config.isParsingHTML()) {
 			tag = tag.toLowerCase();
 		}
-		Tag t = new Tag(tag, attr, ns);
+		Tag t = new Tag(tag, h);
 		if (null != current) {
 			current.addChild(t);
 			t.setParent(current);
-		}
+		} 
 //		else {
 //			t.setParent(config.getDefaultRoot());
 //		}
@@ -119,7 +117,7 @@ public class XMLWorkerImpl implements XMLWorker, SimpleXMLDocHandler {
 			config.getCssResolver().resolveStyles(t);
 		}
 		try {
-			TagProcessor tp = resolveProcessor(tag, ns);
+			TagProcessor tp = resolveProcessor(tag);
 			if (tp.isStackOwner()) {
 				queue.addFirst(new StackKeeper(t));
 			}
@@ -147,8 +145,8 @@ public class XMLWorkerImpl implements XMLWorker, SimpleXMLDocHandler {
 	 * @param tag
 	 * @return
 	 */
-	private TagProcessor resolveProcessor(final String tag, final String ns) {
-		TagProcessor tp = this.config.getTagFactory().getProcessor(tag, ns);
+	private TagProcessor resolveProcessor(final String tag) {
+		TagProcessor tp = this.config.getTagFactory().getProcessor(tag);
 		tp.setConfiguration(this.config);
 		return tp;
 	}
@@ -160,15 +158,15 @@ public class XMLWorkerImpl implements XMLWorker, SimpleXMLDocHandler {
 	 * The returned Element by the TagProcessor is added to the currentContent stack.<br />
 	 * If any of the parent tags or the given tags {@link TagProcessor#isStackOwner()} is true. The returned Element is
 	 * put on the respective stack.Else it element is added to the document or the elementList.
-	 *
+	 * 
 	 */
-	public void endElement(String tag, final String ns) {
+	public void endElement(String tag) {
 		if (config.isParsingHTML()) {
 			tag = tag.toLowerCase();
 		}
 		TagProcessor tp;
 		try {
-			tp = resolveProcessor(tag, ns);
+			tp = resolveProcessor(tag);
 			if (queue.isEmpty()) {
 				List<Element> elems = tp.endElement(current, currentContent);
 				if (elems.size() > 0) {
@@ -239,7 +237,7 @@ public class XMLWorkerImpl implements XMLWorker, SimpleXMLDocHandler {
 					} catch (UnsupportedEncodingException e) {
 						throw new RuntimeWorkerException(e);
 					}
-					TagProcessor tp = resolveProcessor(current.getTag(), current.getNameSpace());
+					TagProcessor tp = resolveProcessor(current.getTag());
 					List<Element> content = tp.content(current, encoded);
 					if (queue.isEmpty()) {
 						try {
@@ -266,7 +264,7 @@ public class XMLWorkerImpl implements XMLWorker, SimpleXMLDocHandler {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler#startDocument()
 	 */
 	public void startDocument() {
@@ -277,7 +275,7 @@ public class XMLWorkerImpl implements XMLWorker, SimpleXMLDocHandler {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler#endDocument()
 	 */
 	public void endDocument() {
@@ -286,7 +284,7 @@ public class XMLWorkerImpl implements XMLWorker, SimpleXMLDocHandler {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.itextpdf.tool.xml.XMLWorker#setDocumentListener(com.itextpdf.tool .xml.DocumentListener)
 	 */
 	public void setDocumentListener(final ElementHandler elementHandler) {
@@ -305,7 +303,7 @@ public class XMLWorkerImpl implements XMLWorker, SimpleXMLDocHandler {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.itextpdf.tool.xml.parser.ParserListener#unknownText(java.lang.String)
 	 */
 	public void unknownText(final String text) {
@@ -314,34 +312,20 @@ public class XMLWorkerImpl implements XMLWorker, SimpleXMLDocHandler {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.itextpdf.tool.xml.parser.ParserListener#comment(java.lang.String)
 	 */
 	public void comment(final String comment) {
-		// TODO xml comment encountered
+		// xml comment encountered
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.itextpdf.tool.xml.XMLWorker#setConfiguration(com.itextpdf.tool.xml.XMLWorkerConfiguration)
 	 */
 	public void setConfiguration(final XMLWorkerConfig config) {
 		this.config = config;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler#startElement(java.lang.String, java.util.Map)
-	 */
-	public void startElement(final String tag, final Map<String, String> h) {
-		this.startElement(tag, h, "");
-	}
-
-	/* (non-Javadoc)
-	 * @see com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler#endElement(java.lang.String)
-	 */
-	public void endElement(final String tag) {
-		this.endElement(tag, "");
 	}
 
 }

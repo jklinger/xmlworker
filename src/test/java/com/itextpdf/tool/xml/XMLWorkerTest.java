@@ -84,7 +84,7 @@ public class XMLWorkerTest {
     	config = new XMLWorkerConfigurationImpl();
         config.tagProcessorFactory(new TagProcessorFactory() {
 
-            public TagProcessor getProcessor(final String tag, final String ns) {
+            public TagProcessor getProcessor(final String tag) {
                 if ("t".equals(tag)) {
                     return new TagProcessor() {
 

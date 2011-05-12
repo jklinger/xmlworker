@@ -85,7 +85,7 @@ public class XMLParser {
 	 * Constructs a XMLParser.
 	 * @param isHtml false if this parser is not going to parse HTML and whitespace should be submitted as text too.
 	 */
-	public XMLParser(final boolean isHtml) {
+	public XMLParser(boolean isHtml) {
 		this.controller = new StateController(this, isHtml);
 		controller.unknown();
 		memory = new XMLParserMemory();
@@ -311,7 +311,7 @@ public class XMLParser {
 		currentTagState(TagState.OPEN);
 		callText();
 		for (XMLParserListener l : listeners) {
-			l.startElement(this.memory.getCurrentTag(), this.memory.getAttributes(), this.memory.getNameSpace());
+			l.startElement(this.memory.getCurrentTag(), this.memory.getAttributes());
 		}
 	}
 
@@ -336,7 +336,7 @@ public class XMLParser {
 		currentTagState(TagState.CLOSE);
 		callText();
 		for (XMLParserListener l : listeners) {
-			l.endElement(this.memory.getCurrentTag(), this.memory.getNameSpace());
+			l.endElement(this.memory.getCurrentTag());
 		}
 		if (openclosed == 0) {
 			controller.unknown();
@@ -420,8 +420,7 @@ public class XMLParser {
 	 *  Set the state of the current tag
 	 * @param state the state of the current tag
 	 */
-	private void currentTagState(final TagState state) {
+	private void currentTagState(TagState state) {
 		this.tagState = state;
 	}
-
 }
