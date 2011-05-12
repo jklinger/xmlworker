@@ -332,7 +332,7 @@ public class Table extends AbstractTagProcessor {
 			// all invalid row elements taken as caption
 			int i = 0;
 			Tag captionTag = tag.getChildren().get(i);
-			while (!captionTag.getTag().equalsIgnoreCase(HTML.Tag.CAPTION)) {
+			while (!captionTag.getTag().equalsIgnoreCase(HTML.Tag.CAPTION) && i < tag.getChildren().size()) {
 				i++;
 				captionTag = tag.getChildren().get(i);
 			}
