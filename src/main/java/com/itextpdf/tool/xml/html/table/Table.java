@@ -96,7 +96,7 @@ public class Table extends AbstractTagProcessor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.itextpdf.tool.xml.TagProcessor#endElement(com.itextpdf.tool.xml.Tag,
 	 * java.util.List, com.itextpdf.text.Document)
@@ -104,7 +104,7 @@ public class Table extends AbstractTagProcessor {
 	@Override
 	public List<Element> end(final Tag tag, final List<Element> currentContent) {
 		int numberOfColumns = 0;
-		// 
+		//
 		List<TableRowElement> tableRows = new ArrayList<TableRowElement>(currentContent.size());
 		List<Element> invalidRowElements = new ArrayList<Element>(1);
 		for (Element e : currentContent) {
@@ -147,38 +147,30 @@ public class Table extends AbstractTagProcessor {
 		//
 		for (TableRowElement row : tableRows) {
 			List<HtmlCell> cells = row.getContent();
-			HtmlCell last = (HtmlCell) cells.get(cells.size() - 1);
+			HtmlCell last = cells.get(cells.size() - 1);
 			last.getCellValues().setLastInRow(true);
 			last.setPaddingRight(last.getPaddingRight() + styleValues.getHorBorderSpacing());
 		}
 		float[] columnWidths = new float[numberOfColumns];
 		float[] widestWords = new float[numberOfColumns];
 		float[] fixedWidths = new float[numberOfColumns];
-//		int[] rowspanValue = new int[numberOfColumns];
+		int[] rowspanValue = new int[numberOfColumns];
 		float largestColumn = 0;
 		int indexOfLargestColumn = 0;
 		// Initial fill of the widths arrays
 		for (TableRowElement row : tableRows) {
 			int column = 0;
 			for (HtmlCell cell : row.getContent()) {
-//				if (column >= numberOfColumns) {
-//					boolean a = false;
-//				}
-//				if (rowspanValue[column] > 1) {
-//					rowspanValue[column] = rowspanValue[column] - 1;
-//					++column;
-//				}
-//				if (cell.getColspan() > 1) {
-//					if (LOG.isLogging()) {
-//						LOG.log(String.format("Cell Colspan: %d", cell.getColspan()));
-//					}
-//					column += cell.getColspan() - 1;
-//				}
-				// sets a rowspan counter for current column (counter not
-				// needed for last column).
-//				if (cell.getRowspan() > 1 && column != numberOfColumns - 1) {
-//					rowspanValue[column] = cell.getRowspan() - 1;
-//				}
+				// check whether the current column should be skipped due to a rowspan value of higher cell in this column.
+				while (rowspanValue[column] > 1) {
+					rowspanValue[column] = rowspanValue[column] - 1;
+					++column;
+				}
+//				sets a rowspan counter for current column (counter not
+//				needed for last column).
+				if (cell.getRowspan() > 1 && column != numberOfColumns - 1) {
+					rowspanValue[column] = cell.getRowspan() - 1;
+				}
 				if (cell.getFixedWidth() != 0) {
 					float fixedWidth = cell.getFixedWidth() +
 								getCellStartWidth(cell, styleValues) +
@@ -349,7 +341,7 @@ public class Table extends AbstractTagProcessor {
 		}
 		return elems;
 	}
-	
+
 	/**
 	 * Extracts and parses the style border-spacing or the attribute cellspacing
 	 * of a table tag, if present. Favors the style border-spacing over the
@@ -357,7 +349,7 @@ public class Table extends AbstractTagProcessor {
 	 * If style="border-collapse:collapse" is found in the css, the spacing is
 	 * always 0f. <br />
 	 * If no spacing is set, the default of 1.5pt is returned.
-	 * 
+	 *
 	 * @param getHor true for horizontal spacing, false for vertical spacing.
 	 * @param css of the table tag.
 	 * @param attributes of the table tag.
@@ -393,14 +385,14 @@ public class Table extends AbstractTagProcessor {
 	}
 
 	/**
-	 * @param styleValues 
+	 * @param styleValues
 	 * @param column
 	 * @param fixedWidths
 	 * @param widestWords
 	 * @param columnWidths
 	 * @return
 	 */
-	private float[] setCellWidthAndWidestWord(final HtmlCell cell, TableStyleValues styleValues) {
+	private float[] setCellWidthAndWidestWord(final HtmlCell cell, final TableStyleValues styleValues) {
 		List<Float> rulesWidth = new ArrayList<Float>();
 		float widestWordOfCell = 0f;
 		float startWidth = getCellStartWidth(cell, styleValues);
@@ -437,7 +429,7 @@ public class Table extends AbstractTagProcessor {
         		rulesWidth.add(cellWidth);
 				cellWidth = startWidth + ((PdfPTable)baseLevel).getTotalWidth();
 				 ((PdfPTable)baseLevel).getRows().size();
-				
+
 				for(PdfPRow innerRow :((PdfPTable)baseLevel).getRows()) {
 					float minRowWidth = 0;
 					int size = innerRow.getCells().length;
@@ -479,7 +471,7 @@ public class Table extends AbstractTagProcessor {
 		return fixedWidthTotal;
 	}
 
-	private float getTotalWidth(final float[] columnWidths, final Tag tag, TableStyleValues styleValues) {
+	private float getTotalWidth(final float[] columnWidths, final Tag tag, final TableStyleValues styleValues) {
 		float width = 0;
 		for(float f: columnWidths) {
 			width += f;
@@ -498,7 +490,7 @@ public class Table extends AbstractTagProcessor {
 		return width;
 	}
 
-	private float getCellStartWidth(final HtmlCell cell, TableStyleValues styleValues) {
+	private float getCellStartWidth(final HtmlCell cell, final TableStyleValues styleValues) {
 		// colspan - 1, because one horBorderSpacing has been added to paddingLeft for all cells.
 		int spacingMultiplier = cell.getColspan() - 1;
 		// if lastInRow add one more horSpacing right of the cell.
