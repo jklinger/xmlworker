@@ -61,7 +61,6 @@ import com.itextpdf.text.log.LoggerFactory;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPRow;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.tool.xml.AbstractTagProcessor;
 import com.itextpdf.tool.xml.Tag;
 import com.itextpdf.tool.xml.XMLWorkerConfig;
 import com.itextpdf.tool.xml.css.CSS;
@@ -70,6 +69,7 @@ import com.itextpdf.tool.xml.css.FontSizeTranslator;
 import com.itextpdf.tool.xml.css.WidthCalculator;
 import com.itextpdf.tool.xml.css.apply.ChunkCssApplier;
 import com.itextpdf.tool.xml.exceptions.RuntimeWorkerException;
+import com.itextpdf.tool.xml.html.AbstractTagProcessor;
 import com.itextpdf.tool.xml.html.HTML;
 import com.itextpdf.tool.xml.html.pdfelement.HtmlCell;
 
@@ -96,7 +96,7 @@ public class Table extends AbstractTagProcessor {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * com.itextpdf.tool.xml.TagProcessor#endElement(com.itextpdf.tool.xml.Tag,
 	 * java.util.List, com.itextpdf.text.Document)
@@ -111,10 +111,8 @@ public class Table extends AbstractTagProcessor {
 			int localNumCols = 0;
 			if (e instanceof TableRowElement) {
 				TableRowElement tableRowElement = (TableRowElement) e;
-				for (Element cell : tableRowElement.getContent()) {
-					if (cell instanceof HtmlCell) {
-						localNumCols += ((HtmlCell) cell).getColspan();
-					}
+				for (HtmlCell cell : tableRowElement.getContent()) {
+						localNumCols += cell.getColspan();
 				}
 				tableRows.add(tableRowElement);
 			} else {
@@ -341,7 +339,7 @@ public class Table extends AbstractTagProcessor {
 		}
 		return elems;
 	}
-
+	
 	/**
 	 * Extracts and parses the style border-spacing or the attribute cellspacing
 	 * of a table tag, if present. Favors the style border-spacing over the
@@ -349,7 +347,7 @@ public class Table extends AbstractTagProcessor {
 	 * If style="border-collapse:collapse" is found in the css, the spacing is
 	 * always 0f. <br />
 	 * If no spacing is set, the default of 1.5pt is returned.
-	 *
+	 * 
 	 * @param getHor true for horizontal spacing, false for vertical spacing.
 	 * @param css of the table tag.
 	 * @param attributes of the table tag.
@@ -385,14 +383,14 @@ public class Table extends AbstractTagProcessor {
 	}
 
 	/**
-	 * @param styleValues
+	 * @param styleValues 
 	 * @param column
 	 * @param fixedWidths
 	 * @param widestWords
 	 * @param columnWidths
 	 * @return
 	 */
-	private float[] setCellWidthAndWidestWord(final HtmlCell cell, final TableStyleValues styleValues) {
+	private float[] setCellWidthAndWidestWord(final HtmlCell cell, TableStyleValues styleValues) {
 		List<Float> rulesWidth = new ArrayList<Float>();
 		float widestWordOfCell = 0f;
 		float startWidth = getCellStartWidth(cell, styleValues);
@@ -429,7 +427,7 @@ public class Table extends AbstractTagProcessor {
         		rulesWidth.add(cellWidth);
 				cellWidth = startWidth + ((PdfPTable)baseLevel).getTotalWidth();
 				 ((PdfPTable)baseLevel).getRows().size();
-
+				
 				for(PdfPRow innerRow :((PdfPTable)baseLevel).getRows()) {
 					float minRowWidth = 0;
 					int size = innerRow.getCells().length;
@@ -471,7 +469,7 @@ public class Table extends AbstractTagProcessor {
 		return fixedWidthTotal;
 	}
 
-	private float getTotalWidth(final float[] columnWidths, final Tag tag, final TableStyleValues styleValues) {
+	private float getTotalWidth(final float[] columnWidths, final Tag tag, TableStyleValues styleValues) {
 		float width = 0;
 		for(float f: columnWidths) {
 			width += f;
@@ -490,7 +488,7 @@ public class Table extends AbstractTagProcessor {
 		return width;
 	}
 
-	private float getCellStartWidth(final HtmlCell cell, final TableStyleValues styleValues) {
+	private float getCellStartWidth(final HtmlCell cell, TableStyleValues styleValues) {
 		// colspan - 1, because one horBorderSpacing has been added to paddingLeft for all cells.
 		int spacingMultiplier = cell.getColspan() - 1;
 		// if lastInRow add one more horSpacing right of the cell.

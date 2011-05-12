@@ -32,18 +32,11 @@ package com.itextpdf.tool.xml.html;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.tool.xml.AbstractTagProcessor;
 import com.itextpdf.tool.xml.Tag;
-import com.itextpdf.tool.xml.XMLWorkerConfig;
-import com.itextpdf.tool.xml.css.CSS;
-import com.itextpdf.tool.xml.css.CssUtils;
-import com.itextpdf.tool.xml.css.apply.ParagraphCssApplier;
+import com.itextpdf.tool.xml.css.apply.NoNewLineParagraphCssApplier;
+import com.itextpdf.tool.xml.html.pdfelement.NoNewLineParagraph;
 
 /**
  * @author redlab_b
@@ -51,7 +44,7 @@ import com.itextpdf.tool.xml.css.apply.ParagraphCssApplier;
  */
 public class Body extends AbstractTagProcessor {
 
-	private final CssUtils utils = CssUtils.getInstance();
+//	private final CssUtils utils = CssUtils.getInstance();
 
 	/*
 	 * (non-Javadoc)
@@ -86,7 +79,7 @@ public class Body extends AbstractTagProcessor {
 //			}
 //			doc.setMargins(marginLeft, marginRight, marginTop, marginBottom);
 //		}
-//		
+//
 		return new ArrayList<Element>(0);
 	}
 
@@ -101,7 +94,7 @@ public class Body extends AbstractTagProcessor {
 		String sanitized = HTMLUtils.sanitize(content);
 		List<Element> l = new ArrayList<Element>(1);
 		if (sanitized.length() > 0) {
-			l.add(new ParagraphCssApplier(configuration).apply(new Paragraph(sanitized), tag));
+			l.add(new NoNewLineParagraphCssApplier(configuration).apply(new NoNewLineParagraph(sanitized), tag));
 		}
 		return l;
 	}
