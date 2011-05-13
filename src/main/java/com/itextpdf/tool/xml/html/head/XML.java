@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.itextpdf.text.Element;
+import com.itextpdf.text.log.Level;
 import com.itextpdf.text.log.Logger;
 import com.itextpdf.text.log.LoggerFactory;
 import com.itextpdf.tool.xml.Tag;
@@ -60,7 +61,7 @@ import com.itextpdf.tool.xml.html.AbstractTagProcessor;
  */
 public class XML extends AbstractTagProcessor {
 
-	private static final Logger logger = LoggerFactory.getLogger();
+	private static final Logger logger = LoggerFactory.getLogger(XML.class);
 	/*
 	 * (non-Javadoc)
 	 *
@@ -72,13 +73,13 @@ public class XML extends AbstractTagProcessor {
 		if (null != enc) {
 			if (Charset.isSupported(enc)) {
 				this.configuration.charSet(Charset.forName(enc));
-				if (logger.isLogging()) {
-					logger.log(
+				if (logger.isLogging(Level.DEBUG)) {
+					logger.debug(
 							String.format("Detected Charset %s from xml tag, using detected charset.", enc));
 				}
 			} else {
-				if (logger.isLogging()) {
-					logger.log(String.format("No Charset detected from xml tag, using default"));
+				if (logger.isLogging(Level.DEBUG)) {
+					logger.debug(String.format("No Charset detected from xml tag, using default"));
 				}
 			}
 

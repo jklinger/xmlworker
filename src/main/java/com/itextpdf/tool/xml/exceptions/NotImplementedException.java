@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: XMLWorkerConfigurationImpl.java 53 2011-05-12 13:33:22Z redlab_b $
  *
  * This file is part of the iText (R) project.
  * Copyright (c) 1998-2011 1T3XT BVBA
@@ -41,74 +41,45 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml.net;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.log.Logger;
-import com.itextpdf.text.log.LoggerFactory;
-import com.itextpdf.tool.xml.Provider;
-import com.itextpdf.tool.xml.net.exc.NoImageException;
+package com.itextpdf.tool.xml.exceptions;
 
 /**
- * @author redlab_b
+ * Due to support for Java 1.5, a NotImplementedException
  *
  */
-public class ImageRetrieve {
-	private final Provider provider;
+public class NotImplementedException extends RuntimeException {
+
 	/**
-	 * @param provider the provider to use.
 	 *
 	 */
-	public ImageRetrieve(final Provider provider) {
-		this.provider = provider;
-	}
-	/**
-	 * @param src an URI that can be used to retrieve an image
-	 * @return an iText Image object
-	 * @throws NoImageException
-	 * @throws IOException
-	 */
-	public com.itextpdf.text.Image retrieveImage(final String src) throws NoImageException, IOException {
-		com.itextpdf.text.Image img;
-		img = provider.retrieve(src);
+	private static final long serialVersionUID = 1L;
 
-		if (null == img) {
-			String path = null;
-			if (src.startsWith("http")) {
-				// full url available
-				path = src;
-			} else {
-				String root = this.provider.get(Provider.GLOBAL_IMAGE_ROOT);
-				if (null != root) {
-					if (root.endsWith("/") && src.startsWith("/")) {
-						root = root.substring(0, root.length() - 1);
-					}
-					path = root + src;
-				}
-			}
-			if (null != path) {
-				try {
-					if (path.startsWith("http")) {
-						img = com.itextpdf.text.Image.getInstance(path);
-					} else {
-						img = com.itextpdf.text.Image.getInstance(new URL("file:///" + path));
-					}
-					if (null != img) {
-						provider.store( src, img);
-					}
-				} catch (BadElementException e) {
-					throw new NoImageException(src, e);
-				} catch (MalformedURLException e) {
-					throw new NoImageException(src, e);
-				}
-			} else {
-				throw new NoImageException(src);
-			}
-		}
-		return img;
+	/**
+	 *
+	 */
+	public NotImplementedException() {
 	}
+
+	/**
+	 * @param arg0
+	 */
+	public NotImplementedException(final String arg0) {
+		super(arg0);
+	}
+
+	/**
+	 * @param arg0
+	 */
+	public NotImplementedException(final Throwable arg0) {
+		super(arg0);
+	}
+
+	/**
+	 * @param arg0
+	 * @param arg1
+	 */
+	public NotImplementedException(final String arg0, final Throwable arg1) {
+		super(arg0, arg1);
+	}
+
 }
