@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: package-info.java 8 2011-05-03 16:45:05Z redlab_b $
  *
  * This file is part of the iText (R) project.
  * Copyright (c) 1998-2011 1T3XT BVBA
@@ -41,19 +41,7 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml.pipeline;
-
 /**
- * @author redlab_b
- *
+ * The pipeline package contains the pipeline interfaces and objects used by {@link com.itextpdf.tool.xml.pipeline.Pipeline}s
  */
-public interface WorkerContext {
-
-	/**
-	 * @param klass
-	 * @param name
-	 * @return
-	 */
-	CustomContext get(Class<?> klass);
-
-}
+package com.itextpdf.tool.xml.pipeline;
