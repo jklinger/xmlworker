@@ -41,13 +41,44 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml.pipeline;
+package com.itextpdf.tool.xml;
 
 /**
  * @author redlab_b
  *
  */
-public interface CustomContext {
+public class NoCustomContextException extends Exception {
 
+	/**
+	 *
+	 */
+	public NoCustomContextException() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @param arg0
+	 */
+	public NoCustomContextException(final String arg0) {
+		super(arg0);
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @param arg0
+	 */
+	public NoCustomContextException(final Throwable arg0) {
+		super(arg0);
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @param arg0
+	 * @param arg1
+	 */
+	public NoCustomContextException(final String arg0, final Throwable arg1) {
+		super(arg0, arg1);
+		// TODO Auto-generated constructor stub
+	}
 
 }

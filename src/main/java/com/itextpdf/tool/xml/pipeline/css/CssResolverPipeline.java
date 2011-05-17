@@ -41,92 +41,63 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml.pipeline.pipe;
+package com.itextpdf.tool.xml.pipeline.css;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import com.itextpdf.tool.xml.StackKeeper;
-import com.itextpdf.tool.xml.TagProcessor;
-import com.itextpdf.tool.xml.TagProcessorFactory;
-import com.itextpdf.tool.xml.XMLWorkerConfig;
-import com.itextpdf.tool.xml.html.Tags;
-import com.itextpdf.tool.xml.pipeline.CustomContext;
-import com.itextpdf.tool.xml.pipeline.Writable;
+import com.itextpdf.tool.xml.CustomContext;
+import com.itextpdf.tool.xml.NoCustomContextException;
+import com.itextpdf.tool.xml.Pipeline;
+import com.itextpdf.tool.xml.PipelineException;
+import com.itextpdf.tool.xml.ProcessObject;
+import com.itextpdf.tool.xml.Tag;
+import com.itextpdf.tool.xml.pipeline.AbstractPipeline;
+import com.itextpdf.tool.xml.pipeline.ctx.MapContext;
 
 /**
  * @author redlab_b
  *
  */
-public class HtmlPipelineContext implements CustomContext {
+public class CssResolverPipeline extends AbstractPipeline {
 
-	private final LinkedList<StackKeeper> queue;
-	private final boolean acceptUnknown = true;
-	private final TagProcessorFactory tagFactory = Tags.getHtmlTagProcessorFactory();
-	private final List<Writable> ctn = new ArrayList<Writable>();
-	private final XMLWorkerConfig config;
+	private final CSSResolver resolver;
+
+	/**
+	 * @param next
+	 * @param cssResolver
+	 */
+	public CssResolverPipeline(final CSSResolver cssResolver, final Pipeline next) {
+		super(next);
+		this.resolver = cssResolver;
+	}
 
 	/**
 	 *
 	 */
-	public HtmlPipelineContext(final XMLWorkerConfig config) {
-		this.queue = new LinkedList<StackKeeper>();
-		this.config = config;
-	}
-	/**
-	 * @param tag
-	 * @param nameSpace
-	 * @return
-	 */
-	public TagProcessor resolveProcessor(final String tag, final String nameSpace) {
-		TagProcessor tp = tagFactory.getProcessor(tag, nameSpace);
-		tp.setConfiguration(config);
-		return tp;
-	}
+	public static final String CSS_RESOLVER = "CSS_RESOLVER";
 
-	/**
-	 * @param stackKeeper
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see com.itextpdf.tool.xml.pipeline.Pipeline#open(com.itextpdf.tool.
+	 * xml.Tag, com.itextpdf.tool.xml.pipeline.ProcessObject)
 	 */
-	public void addFirst(final StackKeeper stackKeeper) {
-		this.queue.addFirst(stackKeeper);
-
+	@Override
+	public Pipeline open(final Tag t, final ProcessObject po) throws PipelineException {
+		CustomContext cc = getContext().get(CssResolverPipeline.class);
+		if (null != cc) {
+			((CSSResolver) ((MapContext) cc).get(CSS_RESOLVER)).resolveStyles(t);
+		}
+		return getNext();
 	}
 
-	/**
-	 * Retrieves, but does not remove, the head (first element) of this list.
-	 * @return
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see com.itextpdf.tool.xml.pipeline.Pipeline#getNewCustomContext()
 	 */
-	public StackKeeper peek() {
-			return this.queue.getFirst();
-	}
-
-	/**
-	 * @return
-	 */
-	public List<Writable> currentContent() {
-		return ctn;
-	}
-
-	/**
-	 * @return
-	 */
-	public boolean acceptUnknown() {
-		return this.acceptUnknown;
-	}
-
-	/**
-	 * @return
-	 */
-	public boolean isEmpty() {
-		return queue.isEmpty();
-	}
-
-	/**
-	 * @return
-	 */
-	public StackKeeper poll() {
-		return this.queue.removeFirst();
+	public CustomContext getCustomContext() throws NoCustomContextException {
+		MapContext mc = new MapContext();
+		mc.put(CSS_RESOLVER, this.resolver);
+		return mc;
 	}
 
 }

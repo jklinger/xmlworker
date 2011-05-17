@@ -41,61 +41,57 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml;
+package com.itextpdf.tool.xml.html;
 
-import java.util.List;
-
-import com.itextpdf.tool.xml.pipeline.Writable;
+import com.itextpdf.text.Image;
 
 /**
+ * The provider object provides the {@link TagProcessor}s implementation with certain data. It is mainly for the
+ * html/css parsing capabilities. An &lt;img&gt; or &lt;a&gt; tag can be provided with the a string to prepend to the
+ * link in the src or href attribute. In example when the src attribute of an image isn't an absolute link (e.g. it is
+ * picture.jpg but should be http://www.example.com/picture.jpg to retrieve the picture, then the
+ * http://www.example.com/ part will be looked up through {@link Provider#get(String)} with
+ * {@link Provider#GLOBAL_IMAGE_ROOT}.<br />
+ * At the same time, it is a memory for already used images, or a developer can set the images that will be used through
+ * {@link Provider#store(String, com.itextpdf.text.Image)}.
+ *
  * @author redlab_b
  *
  */
-public interface TagProcessor {
-
-
-    /**
-     * This method is called when a tag has been encountered.
-     *
-     * @param tag the tag encountered
-     * @return Element an Element to add to the current content;
-     */
-    List<Writable> startElement(Tag tag);
-
-    /**
-     * This method is called if there is text content encountered between the
-     * opening and closing tags this TagProcessor is mapped to.
-     *
-     * @param tag the tag encountered
-     * @param content the text content between the tags this TagProcessor is
-     *        mapped to.
-     * @return the element to add to the currentContent list
-     */
-    List<Writable> content(Tag tag, String content);
+public interface Provider {
 
 	/**
-	 * This method is called when a closing tag has been encountered of the
-	 * TagProcessor implementation that is mapped to the tag.
+	 * The key for the image root.
+	 */
+	public static final String GLOBAL_IMAGE_ROOT = "globalImgRoot";
+	/**
+	 * The key for the link root.
+	 */
+	public static final String GLOBAL_LINK_ROOT = "globalLinkRoot";
+	/**
+	 * The key for the css root.
+	 */
+	public static final String GLOBAL_CSS_ROOT = "globalCssRoot";
+
+	/**
+	 * Retrieve a value from the configuration mapping in the provider.
 	 *
-	 * @param tag the tag encountered
-	 * @param currentContent a list of content possibly created by TagProcessing
-	 *            of inner tags, and by <code>startElement</code> and
-	 *            <code>content</code> methods of this <code>TagProcessor</code>
-	 *            .
-	 * @return the resulting element to add to the document or a content stack.
+	 * @param key the key to lookup
+	 * @return the value or null if not found
 	 */
-    List<Writable> endElement(Tag tag, List<Writable> currentContent);
-
-    /**
-     * @return true if the tag implementation must keep it's own currentContent
-     *         stack.
-     */
-    boolean isStackOwner();
+	public String get(String key);
 
 	/**
-	 * The configuration object setter.
-	 * @param config the configuration object.
+	 * Looks up an image.
+	 * @param src the value of the src attribute of the image to lookup
+	 * @return the Image or null if not found
 	 */
-	void setConfiguration(XMLWorkerConfig config);
+	public Image retrieve(String src);
 
+	/**
+	 * Stores an image.
+	 * @param src the value of the src attribute of the image
+	 * @param img the image
+	 */
+	public void store(String src, Image img);
 }

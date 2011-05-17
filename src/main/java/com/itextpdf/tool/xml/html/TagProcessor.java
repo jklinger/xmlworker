@@ -1,5 +1,5 @@
 /*
- * $Id: package-info.java 8 2011-05-03 16:45:05Z redlab_b $
+ * $Id$
  *
  * This file is part of the iText (R) project.
  * Copyright (c) 1998-2011 1T3XT BVBA
@@ -41,7 +41,63 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
+package com.itextpdf.tool.xml.html;
+
+import java.util.List;
+
+import com.itextpdf.tool.xml.Tag;
+import com.itextpdf.tool.xml.Writable;
+import com.itextpdf.tool.xml.XMLWorkerConfig;
+
 /**
- * Collection of pipelines that can be used to setup XML processing in the {@link com.itextpdf.tool.xml.XMLWorker}
+ * @author redlab_b
+ *
  */
-package com.itextpdf.tool.xml.pipeline.pipe;
+public interface TagProcessor {
+
+
+    /**
+     * This method is called when a tag has been encountered.
+     *
+     * @param tag the tag encountered
+     * @return Element an Element to add to the current content;
+     */
+    List<Writable> startElement(Tag tag);
+
+    /**
+     * This method is called if there is text content encountered between the
+     * opening and closing tags this TagProcessor is mapped to.
+     *
+     * @param tag the tag encountered
+     * @param content the text content between the tags this TagProcessor is
+     *        mapped to.
+     * @return the element to add to the currentContent list
+     */
+    List<Writable> content(Tag tag, String content);
+
+	/**
+	 * This method is called when a closing tag has been encountered of the
+	 * TagProcessor implementation that is mapped to the tag.
+	 *
+	 * @param tag the tag encountered
+	 * @param currentContent a list of content possibly created by TagProcessing
+	 *            of inner tags, and by <code>startElement</code> and
+	 *            <code>content</code> methods of this <code>TagProcessor</code>
+	 *            .
+	 * @return the resulting element to add to the document or a content stack.
+	 */
+    List<Writable> endElement(Tag tag, List<Writable> currentContent);
+
+    /**
+     * @return true if the tag implementation must keep it's own currentContent
+     *         stack.
+     */
+    boolean isStackOwner();
+
+	/**
+	 * The configuration object setter.
+	 * @param config the configuration object.
+	 */
+	void setConfiguration(XMLWorkerConfig config);
+
+}

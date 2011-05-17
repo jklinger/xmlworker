@@ -41,19 +41,32 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml.pipeline;
+package com.itextpdf.tool.xml;
+
+import com.itextpdf.tool.xml.exceptions.NotImplementedException;
 
 /**
  * @author redlab_b
  *
  */
-public interface WorkerContext {
+public interface Pipeline {
+
+	public void setContext(WorkerContext context);
+
+	public Pipeline open(Tag t, ProcessObject po) throws PipelineException;
+
+	public Pipeline content(Tag t, String content, ProcessObject po) throws PipelineException;
+
+	public Pipeline close(Tag t, ProcessObject po) throws PipelineException;
 
 	/**
-	 * @param klass
-	 * @param name
 	 * @return
 	 */
-	CustomContext get(Class<?> klass);
+	public Pipeline getNext();
 
+	/**
+	 * @return
+	 * @throws NotImplementedException
+	 */
+	public CustomContext getCustomContext() throws NoCustomContextException;
 }

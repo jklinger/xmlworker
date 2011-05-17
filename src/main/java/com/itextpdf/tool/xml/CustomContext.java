@@ -43,63 +43,11 @@
  */
 package com.itextpdf.tool.xml;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import com.itextpdf.text.Element;
-import com.itextpdf.tool.xml.pipeline.Writable;
-
 /**
- * Simple wrapper of a {@link List} to put {@link Element}s in that are created by inner tags of the given Tag.
- *
  * @author redlab_b
  *
  */
-public class StackKeeper {
+public interface CustomContext {
 
-	private final Tag tag;
-	private final List<Writable> stack;
-
-	/**
-	 * @param t the tag
-	 */
-	public StackKeeper(final Tag t) {
-		this.tag = t;
-		this.stack = new ArrayList<Writable>();
-	}
-
-	/**
-	 * Add an element to this keepers stack.
-	 *
-	 * @param content the element to add
-	 */
-	public void add(final Writable content) {
-		this.stack.add(content);
-	}
-
-	/**
-	 * @return the elements in this stack
-	 */
-	public List<Writable> getElements() {
-		return this.stack;
-
-	}
-
-	/**
-	 * Add all given elements to the stack, according to the natural order.
-	 *
-	 * @param elements collection of Element
-	 */
-	public void addAll(final Collection<? extends Writable> elements) {
-		this.stack.addAll(elements);
-	}
-
-	/**
-	 * @return the tag
-	 */
-	public Tag getTag() {
-		return tag;
-	}
 
 }

@@ -41,26 +41,74 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml;
+package com.itextpdf.tool.xml.html;
 
-import com.itextpdf.tool.xml.exceptions.NoTagProcessorException;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.itextpdf.text.Image;
 
 /**
- * A TagProcessorFactory creates TagProcessors used by the {@link XMLWorker}.
- *
+ * Default implementation of Provider.
  * @author redlab_b
  *
  */
-public interface TagProcessorFactory {
+public class DefaultProvider implements Provider {
+
+	private final Map<String, String> map;
+	private final HashMap<String, Image> images;
 
 	/**
-	 * Looks up a TagProcessor for the given tag.
 	 *
-	 * @param tag the tag to find a processor for.
-	 * @param nameSpace the namespace
-	 * @return the {@link TagProcessor} mapped to this tag.
-	 * @throws NoTagProcessorException implementers should thrown this if there is no mapping found.
 	 */
-	TagProcessor getProcessor(String tag, String nameSpace) throws NoTagProcessorException;
+	public DefaultProvider() {
+		this.map = new HashMap<String, String>();
+		this.images = new HashMap<String, Image>();
+		this.map.put(GLOBAL_IMAGE_ROOT, "");
+		this.map.put(GLOBAL_LINK_ROOT, "");
+		this.map.put(GLOBAL_CSS_ROOT, "");
+	}
 
+	/* (non-Javadoc)
+	 * @see com.itextpdf.tool.xml.Provider#get(java.lang.String)
+	 */
+	public String get(final String key) {
+		return this.map.get(key);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.itextpdf.tool.xml.Provider#retrieve(java.lang.String)
+	 */
+	public Image retrieve(final String src) {
+		return images.get(src);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.itextpdf.tool.xml.Provider#store(com.itextpdf.text.Image)
+	 */
+	public void store(final String src, final Image img) {
+		images.put(src, img);
+
+	}
+	/**
+	 * Set a global image root.
+	 * @param root the global image root
+	 */
+	public void setGlobalImageRoot(final String root) {
+		this.map.put(GLOBAL_IMAGE_ROOT, root);
+	}
+	/**
+	 * Set a global link root
+	 * @param root the global link root
+	 */
+	public void setGlobalLinkRoot(final String root) {
+		this.map.put(GLOBAL_LINK_ROOT, root);
+	}
+	/**
+	 * Set a global css root
+	 * @param root the global css root
+	 */
+	public void setGlobalCssRoot(final String root) {
+		this.map.put(GLOBAL_CSS_ROOT, root);
+	}
 }

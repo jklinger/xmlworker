@@ -41,69 +41,91 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml.pipeline.pipe;
+package com.itextpdf.tool.xml.pipeline.html;
 
-import com.itextpdf.tool.xml.ElementHandler;
-import com.itextpdf.tool.xml.Tag;
-import com.itextpdf.tool.xml.pipeline.AbstractPipeline;
-import com.itextpdf.tool.xml.pipeline.Pipeline;
-import com.itextpdf.tool.xml.pipeline.PipelineException;
-import com.itextpdf.tool.xml.pipeline.ProcessObject;
-import com.itextpdf.tool.xml.pipeline.Writable;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import com.itextpdf.tool.xml.CustomContext;
+import com.itextpdf.tool.xml.Writable;
+import com.itextpdf.tool.xml.XMLWorkerConfig;
+import com.itextpdf.tool.xml.html.TagProcessor;
+import com.itextpdf.tool.xml.html.TagProcessorFactory;
+import com.itextpdf.tool.xml.html.Tags;
 
 /**
  * @author redlab_b
  *
  */
-public class ElementHandlerPipeline extends AbstractPipeline {
+public class HtmlPipelineContext implements CustomContext {
 
-	private final ElementHandler handler;
-
-	/**
-	 * @param next
-	 */
-	public ElementHandlerPipeline(final ElementHandler handler, final Pipeline next) {
-		super(next);
-		this.handler =handler;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.itextpdf.tool.xml.pipeline.AbstractPipeline#open(com.itextpdf.tool.xml.Tag, com.itextpdf.tool.xml.pipeline.ProcessObject)
-	 */
-	@Override
-	public Pipeline open(final Tag t, final ProcessObject po) throws PipelineException {
-		consume(po);
-		return getNext();
-	}
+	private final LinkedList<StackKeeper> queue;
+	private final boolean acceptUnknown = true;
+	private final TagProcessorFactory tagFactory = Tags.getHtmlTagProcessorFactory();
+	private final List<Writable> ctn = new ArrayList<Writable>();
+	private final XMLWorkerConfig config;
 
 	/**
-	 * @param po
+	 *
 	 */
-	private void consume(final ProcessObject po) {
-		if (po.containsWritable()) {
-			Writable w = null;
-			while ( null != (w =po.poll())) {
-				handler.add(w);
-			}
-		}
+	public HtmlPipelineContext(final XMLWorkerConfig config) {
+		this.queue = new LinkedList<StackKeeper>();
+		this.config = config;
+	}
+	/**
+	 * @param tag
+	 * @param nameSpace
+	 * @return
+	 */
+	public TagProcessor resolveProcessor(final String tag, final String nameSpace) {
+		TagProcessor tp = tagFactory.getProcessor(tag, nameSpace);
+		tp.setConfiguration(config);
+		return tp;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.itextpdf.tool.xml.pipeline.AbstractPipeline#content(com.itextpdf.tool.xml.Tag, java.lang.String, com.itextpdf.tool.xml.pipeline.ProcessObject)
+	/**
+	 * @param stackKeeper
 	 */
-	@Override
-	public Pipeline content(final Tag t, final String content, final ProcessObject po) throws PipelineException {
-		consume(po);
-		return getNext();
+	public void addFirst(final StackKeeper stackKeeper) {
+		this.queue.addFirst(stackKeeper);
+
 	}
 
-	/* (non-Javadoc)
-	 * @see com.itextpdf.tool.xml.pipeline.AbstractPipeline#close(com.itextpdf.tool.xml.Tag, com.itextpdf.tool.xml.pipeline.ProcessObject)
+	/**
+	 * Retrieves, but does not remove, the head (first element) of this list.
+	 * @return
 	 */
-	@Override
-	public Pipeline close(final Tag t, final ProcessObject po) throws PipelineException {
-		consume(po);
-		return getNext();
+	public StackKeeper peek() {
+			return this.queue.getFirst();
+	}
+
+	/**
+	 * @return
+	 */
+	public List<Writable> currentContent() {
+		return ctn;
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean acceptUnknown() {
+		return this.acceptUnknown;
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isEmpty() {
+		return queue.isEmpty();
+	}
+
+	/**
+	 * @return
+	 */
+	public StackKeeper poll() {
+		return this.queue.removeFirst();
 	}
 
 }

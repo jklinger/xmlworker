@@ -41,24 +41,21 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml.pipeline;
+package com.itextpdf.tool.xml.pipeline.html;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * @author redlab_b
  *
  */
-public class PipelineException extends Exception {
+public interface FileMaker {
 
 	/**
-	 *
+	 * @return the outputstream to write the pdf to
+	 * @throws IOException
 	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * @param e1
-	 */
-	public PipelineException(final Exception e1) {
-		super(e1);
-	}
+	OutputStream getStream() throws IOException;
 
 }

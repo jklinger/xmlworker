@@ -41,33 +41,66 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml.pipeline;
+package com.itextpdf.tool.xml.pipeline.html;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import com.itextpdf.text.Element;
 import com.itextpdf.tool.xml.Tag;
-import com.itextpdf.tool.xml.exceptions.NotImplementedException;
+import com.itextpdf.tool.xml.Writable;
 
 /**
+ * Simple wrapper of a {@link List} to put {@link Element}s in that are created by inner tags of the given Tag.
+ *
  * @author redlab_b
  *
  */
-public interface Pipeline {
+public class StackKeeper {
 
-	public void setContext(WorkerContext context);
-
-	public Pipeline open(Tag t, ProcessObject po) throws PipelineException;
-
-	public Pipeline content(Tag t, String content, ProcessObject po) throws PipelineException;
-
-	public Pipeline close(Tag t, ProcessObject po) throws PipelineException;
+	private final Tag tag;
+	private final List<Writable> stack;
 
 	/**
-	 * @return
+	 * @param t the tag
 	 */
-	public Pipeline getNext();
+	public StackKeeper(final Tag t) {
+		this.tag = t;
+		this.stack = new ArrayList<Writable>();
+	}
 
 	/**
-	 * @return
-	 * @throws NotImplementedException
+	 * Add an element to this keepers stack.
+	 *
+	 * @param content the element to add
 	 */
-	public CustomContext getCustomContext() throws NoCustomContextException;
+	public void add(final Writable content) {
+		this.stack.add(content);
+	}
+
+	/**
+	 * @return the elements in this stack
+	 */
+	public List<Writable> getElements() {
+		return this.stack;
+
+	}
+
+	/**
+	 * Add all given elements to the stack, according to the natural order.
+	 *
+	 * @param elements collection of Element
+	 */
+	public void addAll(final Collection<? extends Writable> elements) {
+		this.stack.addAll(elements);
+	}
+
+	/**
+	 * @return the tag
+	 */
+	public Tag getTag() {
+		return tag;
+	}
+
 }

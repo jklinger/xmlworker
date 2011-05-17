@@ -41,53 +41,39 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml.pipeline;
+package com.itextpdf.tool.xml.pipeline.css;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
+import com.itextpdf.tool.xml.Tag;
+import com.itextpdf.tool.xml.exceptions.CssResolverException;
 
 /**
+ * Resolves CSS rules for a given tag.
+ *
  * @author redlab_b
  *
  */
-public class ProcessObject {
+public interface CSSResolver {
 
-	private final Queue<Writable> queue;
 	/**
+	 * This method is should resolve css, meaning, it will look at the css and retrieve relevant css rules for the given
+	 * tag. The rules can then be set in {@link Tag#setCSS(java.util.Map)}
 	 *
+	 * @param t the tag.
 	 */
-	public ProcessObject() {
-		queue = new LinkedList<Writable>();
-	}
-	/**
-	 * @return true if a writable is contained.
-	 */
-	public boolean containsWritable() {
-		return !queue.isEmpty();
-	}
+	void resolveStyles(Tag t);
 
 	/**
-	 * @return a Writable or null if none.
+	 * Add a piece of CSS code.
+	 * @param content the CSS
+	 * @param charSet
+	 * @throws CssResolverException
 	 */
-	public Writable poll() {
-		return queue.poll();
-	}
-	/**
-	 * @param writable
-	 */
-	public void add(final Writable writable) {
-		queue.add(writable);
-	}
-	/**
-	 * @param elems
-	 */
-	public void addAll(final List<Writable> elems) {
-		for (Writable w : elems) {
-			queue.add(w);
-		}
+	void addCss(String content, String charSet) throws CssResolverException;
 
-	}
+	/**
+	 * @param href the link to the css file
+	 * @throws CssResolverException
+	 */
+	void addCssFile(String href)  throws CssResolverException;
 
 }
