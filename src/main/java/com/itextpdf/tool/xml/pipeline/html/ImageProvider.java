@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: Image.java 94 2011-05-23 23:38:48Z redlab_b $
  *
  * This file is part of the iText (R) project.
  * Copyright (c) 1998-2011 1T3XT BVBA
@@ -41,62 +41,31 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml.pipeline;
+package com.itextpdf.tool.xml.pipeline.html;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.itextpdf.text.Element;
-import com.itextpdf.tool.xml.Writable;
+import com.itextpdf.text.Image;
 
 /**
- * A WritableElement holds all elements that need to be added to a Document.
- * It's used at least in the HTML processing of the XMLWorker.
- * @author redlab_b
+ * @author itextpdf.com
  *
  */
-public class WritableElement implements Writable {
-
-	private final ArrayList<Element> list;
-	/**
-	 *
-	 */
-	public WritableElement() {
-		this.list = new ArrayList<Element>();
-	}
-	/**
-	 * Construct a WritableElement
-	 * @param e an element to add to the list of elements.
-	 */
-	public WritableElement(final Element e) {
-		this();
-		this.list.add(e);
-	}
+public interface ImageProvider {
 
 	/**
-	 * Add a single element to the list of elements.
-	 * @param e an Element
+	 * @param src
+	 * @return
 	 */
-	public void add(final Element e) {
-		list.add(e);
-	}
+	Image retrieve(String src);
 
 	/**
-	 * add all elements to the list. (Note do not submit 1
-	 * com.itextpdf.text.Paragraph this extends from ArrayList, and just the
-	 * Content will be added....)
-	 *
-	 * @param l the list to add.
+	 * @return
 	 */
-	public void addAll(final List<Element> l) {
-		list.addAll(l);
-	}
+	String getImageRootPath();
+
 	/**
-	 * Returns the list of elements.
-	 * @return the list of elements.
+	 * @param src
+	 * @param img
 	 */
-	public List<Element> elements() {
-		return list;
-	}
+	void store(String src, Image img);
 
 }

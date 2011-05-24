@@ -48,23 +48,27 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.log.Logger;
-import com.itextpdf.text.log.LoggerFactory;
-import com.itextpdf.tool.xml.html.Provider;
 import com.itextpdf.tool.xml.net.exc.NoImageException;
+import com.itextpdf.tool.xml.pipeline.html.ImageProvider;
 
 /**
  * @author redlab_b
  *
  */
 public class ImageRetrieve {
-	private final Provider provider;
+	private final ImageProvider provider;
 	/**
-	 * @param provider the provider to use.
+	 * @param imageProvider the provider to use.
 	 *
 	 */
-	public ImageRetrieve(final Provider provider) {
-		this.provider = provider;
+	public ImageRetrieve(final ImageProvider imageProvider) {
+		this.provider = imageProvider;
+	}
+	/**
+	 *
+	 */
+	public ImageRetrieve() {
+		this.provider = null;
 	}
 	/**
 	 * @param src an URI that can be used to retrieve an image
@@ -73,22 +77,26 @@ public class ImageRetrieve {
 	 * @throws IOException
 	 */
 	public com.itextpdf.text.Image retrieveImage(final String src) throws NoImageException, IOException {
-		com.itextpdf.text.Image img;
-		img = provider.retrieve(src);
+		com.itextpdf.text.Image img = null;
+		if (null != provider) {
+			img = provider.retrieve(src);
+		}
 
 		if (null == img) {
 			String path = null;
 			if (src.startsWith("http")) {
 				// full url available
 				path = src;
-			} else {
-				String root = this.provider.get(Provider.GLOBAL_IMAGE_ROOT);
+			} else if (null != provider){
+				String root = this.provider.getImageRootPath();
 				if (null != root) {
 					if (root.endsWith("/") && src.startsWith("/")) {
 						root = root.substring(0, root.length() - 1);
 					}
 					path = root + src;
 				}
+			} else {
+				path = src;
 			}
 			if (null != path) {
 				try {
@@ -97,7 +105,7 @@ public class ImageRetrieve {
 					} else {
 						img = com.itextpdf.text.Image.getInstance(new URL("file:///" + path));
 					}
-					if (null != img) {
+					if (null != provider && null != img) {
 						provider.store( src, img);
 					}
 				} catch (BadElementException e) {
