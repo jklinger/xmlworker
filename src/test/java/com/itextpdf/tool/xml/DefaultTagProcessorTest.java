@@ -48,6 +48,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.itextpdf.text.log.LoggerFactory;
+import com.itextpdf.text.log.SysoLogger;
 import com.itextpdf.tool.xml.exceptions.NoTagProcessorException;
 import com.itextpdf.tool.xml.html.Anchor;
 import com.itextpdf.tool.xml.html.TagProcessorFactory;
@@ -66,6 +68,7 @@ public class DefaultTagProcessorTest {
 
 	@Before
 	public void setup() {
+		LoggerFactory.getInstance().setLogger(new SysoLogger(3));
 		tp = new Tags().getHtmlTagProcessorFactory();
 
 	}

@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: Image.java 94 2011-05-23 23:38:48Z redlab_b $
  *
  * This file is part of the iText (R) project.
  * Copyright (c) 1998-2011 1T3XT BVBA
@@ -41,65 +41,17 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml.parser;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-
-import junit.framework.Assert;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import com.itextpdf.text.log.LoggerFactory;
-import com.itextpdf.text.log.SysoLogger;
-import com.itextpdf.tool.xml.parser.io.Appender;
-import com.itextpdf.tool.xml.parser.io.ParserListenerWriter;
+package com.itextpdf.tool.xml.pipeline.html;
 
 /**
- * @author redlab_b
+ * @author itextpdf.com
  *
  */
-public class ParserTest {
-
-	@Before
-	public void setup() {
-		LoggerFactory.getInstance().setLogger(new SysoLogger(3));
-	}
-	/**
-	 * Validate comment whitespace handling .
-	 *
-	 * @throws IOException
-	 */
-	@Test
-	public void stickyComment() throws IOException {
-		String html = "<p><!--stickycomment-->sometext  moretext</p>";
-		String expected = "<p><!--stickycomment-->sometext  moretext</p>";
-		XMLParser p = new XMLParser(false);
-		final StringBuilder b = init(html, p);
-		p.parse(new ByteArrayInputStream(html.getBytes()));
-		Assert.assertEquals(expected, b.toString());
-	}
+public interface LinkProvider {
 
 	/**
-	 * @param html
-	 * @param p
-	 * @return
+	 * @return the root for links in the document.
 	 */
-	private StringBuilder init(final String html, final XMLParser p) {
-		final StringBuilder writer = new StringBuilder(html.length());
-		p.addListener(new ParserListenerWriter(new Appender() {
+	String getLinkRoot();
 
-			public Appender append(final char c) {
-				writer.append(c);
-				return this;
-			}
-
-			public Appender append(final String str) {
-				writer.append(str);
-				return this;
-			}
-		}, false));
-		return writer;
-	}
 }
