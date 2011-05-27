@@ -163,7 +163,7 @@ public class ListStyleTypeCssApplier implements CssApplier<List> {
 		}
 		leftIndent += css.get(CSS.Property.MARGIN_LEFT)!=null?utils.parseValueToPt(css.get(CSS.Property.MARGIN_LEFT),fontSize):0;
 		leftIndent += css.get(CSS.Property.PADDING_LEFT)!=null?utils.parseValueToPt(css.get(CSS.Property.PADDING_LEFT),fontSize):0;
-//		lst.setIndentationLeft(leftIndent);
+		lst.setIndentationLeft(leftIndent);
 		return lst;
 	}
 
@@ -174,4 +174,5 @@ public class ListStyleTypeCssApplier implements CssApplier<List> {
 		symbol.setTextRise((fontSize-7)/2);
 		symbol.getFont().setSize(7);
 	}
+
 }
