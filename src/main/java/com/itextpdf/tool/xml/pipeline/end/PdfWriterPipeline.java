@@ -190,8 +190,12 @@ public class PdfWriterPipeline extends AbstractPipeline<MapContext> {
 		MapContext mc = new MapContext();
 		continiously = Boolean.TRUE;
 		mc.put(CONTINUOUS, continiously);
-		mc.put(DOCUMENT, doc);
-		mc.put(WRITER, writer);
+		if (null != doc) {
+			mc.put(DOCUMENT, doc);
+		}
+		if (null != writer) {
+			mc.put(WRITER, writer);
+		}
 		return mc;
 	}
 
