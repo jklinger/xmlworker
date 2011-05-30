@@ -53,6 +53,7 @@ import com.itextpdf.text.Image;
 public interface ImageProvider {
 
 	/**
+	 * Retrieve and image from the store.
 	 * @param src the source found in src attribute
 	 * @return the {@link Image}
 	 */

@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: HtmlPipelineContext.java 128 2011-05-27 13:22:11Z redlab_b $
  *
  * This file is part of the iText (R) project.
  * Copyright (c) 1998-2011 1T3XT BVBA
@@ -41,55 +41,47 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml.pipeline.css;
+package com.itextpdf.tool.xml.pipeline.html;
 
-import com.itextpdf.tool.xml.Tag;
-import com.itextpdf.tool.xml.css.CssFile;
-import com.itextpdf.tool.xml.exceptions.CssResolverException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.itextpdf.text.Image;
 
 /**
- * Resolves CSS rules for a given tag.
- *
- * @author redlab_b
+ * @author itextpdf.com
  *
  */
-public interface CSSResolver {
+public abstract class AbstractImageProvider implements ImageProvider {
+
+	private final Map<String, Image> map;
 
 	/**
-	 * This method should resolve css, meaning, it will look at the css and
-	 * retrieve relevant css rules for the given tag. The rules must then be set
-	 * in {@link Tag#setCSS(java.util.Map)}.
 	 *
-	 * @param t the tag.
 	 */
-	void resolveStyles(Tag t);
-
-	/**
-	 * Add a piece of CSS code.
-	 * @param content the CSS
-	 * @param charSet a charset
-	 * @throws CssResolverException thrown if something goes wrong
+	public AbstractImageProvider() {
+		this.map = new ConcurrentHashMap<String, Image>();
+	}
+	/* (non-Javadoc)
+	 * @see com.itextpdf.tool.xml.pipeline.html.ImageProvider#retrieve(java.lang.String)
 	 */
-	void addCss(String content, String charSet) throws CssResolverException;
+	public Image retrieve(final String src) {
+		return map.get(src);
+	}
 
-	/**
-	 * Add a
-	 * @param href the link to the css file ( an absolute uri )
-	 * @throws CssResolverException thrown if something goes wrong
+
+	/* (non-Javadoc)
+	 * @see com.itextpdf.tool.xml.pipeline.html.ImageProvider#store(java.lang.String, com.itextpdf.text.Image)
 	 */
-	void addCssFile(String href)  throws CssResolverException;
+	public void store(final String src, final Image img) {
+		map.put(src, img);
+	}
 
-	/**
-	 * Add a piece of CSS code.
-	 * @param content the content to parse to css
-	 * @throws CssResolverException thrown if something goes wrong
+	/* (non-Javadoc)
+	 * @see com.itextpdf.tool.xml.pipeline.html.ImageProvider#reset()
 	 */
-	void addCss(String content) throws CssResolverException;
-
-	/**
-	 * @param defaultCSS
-	 */
-	void addCss(CssFile defaultCSS);
-
+	public void reset() {
+		this.map.clear();
+	}
 
 }
