@@ -42,6 +42,6 @@
  * address: sales@itextpdf.com
  */
 /**
- * Contains pipelines that can be used as last pipe in the line.
+ *  Contains CSS processing pipeline.
  */
-package com.itextpdf.tool.xml.pipeline.end;
+package com.itextpdf.tool.xml.pipeline.css;

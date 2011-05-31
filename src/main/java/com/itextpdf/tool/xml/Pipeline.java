@@ -45,7 +45,7 @@ package com.itextpdf.tool.xml;
 
 /**
  * @author redlab_b
- * @param <T>
+ * @param <T> the type of CustomContext
  *
  */
 public interface Pipeline<T extends CustomContext> {
