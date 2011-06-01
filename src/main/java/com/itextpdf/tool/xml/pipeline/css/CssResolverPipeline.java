@@ -43,7 +43,6 @@
  */
 package com.itextpdf.tool.xml.pipeline.css;
 
-import com.itextpdf.tool.xml.CustomContext;
 import com.itextpdf.tool.xml.NoCustomContextException;
 import com.itextpdf.tool.xml.Pipeline;
 import com.itextpdf.tool.xml.PipelineException;
@@ -83,12 +82,7 @@ public class CssResolverPipeline extends AbstractPipeline<MapContext> {
 	 */
 	@Override
 	public Pipeline<?> open(final Tag t, final ProcessObject po) throws PipelineException {
-		CustomContext cc;
-		try {
-			cc = getContext().get(CssResolverPipeline.class);
-			((CSSResolver) ((MapContext) cc).get(CSS_RESOLVER)).resolveStyles(t);
-		} catch (NoCustomContextException e) {
-		}
+		((CSSResolver) getLocalContext().get(CSS_RESOLVER)).resolveStyles(t);
 		return getNext();
 	}
 
