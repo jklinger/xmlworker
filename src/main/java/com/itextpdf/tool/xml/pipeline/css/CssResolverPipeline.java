@@ -58,7 +58,7 @@ import com.itextpdf.tool.xml.pipeline.ctx.MapContext;
  */
 public class CssResolverPipeline extends AbstractPipeline<MapContext> {
 
-	private final CSSResolver resolver;
+	private static final ThreadLocal<CSSResolver> resolver = new ThreadLocal<CSSResolver>();
 
 	/**
 	 * @param next the next pipeline.
@@ -66,7 +66,7 @@ public class CssResolverPipeline extends AbstractPipeline<MapContext> {
 	 */
 	public CssResolverPipeline(final CSSResolver cssResolver, final Pipeline<?> next) {
 		super(next);
-		this.resolver = cssResolver;
+		resolver.set(cssResolver);
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class CssResolverPipeline extends AbstractPipeline<MapContext> {
 	 */
 	@Override
 	public Pipeline<?> open(final Tag t, final ProcessObject po) throws PipelineException {
-		((CSSResolver) getLocalContext().get(CSS_RESOLVER)).resolveStyles(t);
+		resolver.get().resolveStyles(t);
 		return getNext();
 	}
 
@@ -94,8 +94,15 @@ public class CssResolverPipeline extends AbstractPipeline<MapContext> {
 	@Override
 	public MapContext getNewCustomContext() throws NoCustomContextException {
 		MapContext mc = new MapContext();
-		mc.put(CSS_RESOLVER, this.resolver);
+		mc.put(CSS_RESOLVER, resolver.get());
 		return mc;
 	}
 
+	/**
+	 * Stores the cssResolver for the calling thread.
+	 * @param resolver
+	 */
+	public void setResolver(final CSSResolver resolver) {
+		CssResolverPipeline.resolver.set(resolver);
+	}
 }
