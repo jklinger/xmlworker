@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: AlignAndMarginTest.java 99 2011-05-25 12:49:57Z redlab_b $
  *
  * This file is part of the iText (R) project.
  * Copyright (c) 1998-2011 1T3XT BVBA
@@ -41,47 +41,31 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml;
+package com.itextpdf.tool.xml.html.tps;
+
+import java.util.List;
 
 import junit.framework.Assert;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import com.itextpdf.text.log.LoggerFactory;
-import com.itextpdf.text.log.SysoLogger;
-import com.itextpdf.tool.xml.html.HTMLUtils;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Element;
+import com.itextpdf.tool.xml.html.Break;
 
 /**
- * @author redlab_b
+ * @author itextpdf.com
  *
  */
-public class HtmlUtilsTest {
+public class TPBreakTest {
 
-	private HTMLUtils util;
-
-	@Before
-	public void setup() {
-		LoggerFactory.getInstance().setLogger(new SysoLogger(3));
-		util = new HTMLUtils();
-	}
-
-//	@Test
-//	public void testSpaceLeading() {
-//		Assert.assertEquals("leading space removed", util.sanitize(" leading space removed"));
-//	}
-//
-//	@Test
-//	public void testSpaceTrailing() {
-//		Assert.assertEquals("trailing space removed", util.sanitize("trailing space removed "));
-//	}
-
+	/**
+	 * Verifies that the call to end of {@link Break} returns a Chunk.NEWLINE.
+	 */
 	@Test
-	public void testRTN() {
-		Assert.assertEquals("", util.sanitize("\r\n\t"));
-	}
-	@Test
-	public void testRTNinline() {
-		Assert.assertEquals("", util.sanitizeInline("\r\n\t"));
+	public void verifyBreakChunk() {
+		final Break br = new Break();
+		final List<Element> end = br.end(null, null);
+		Assert.assertEquals(Chunk.NEWLINE, end.get(0));
 	}
 }
