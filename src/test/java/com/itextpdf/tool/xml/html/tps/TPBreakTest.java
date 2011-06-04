@@ -1,5 +1,5 @@
 /*
- * $Id: AlignAndMarginTest.java 99 2011-05-25 12:49:57Z redlab_b $
+ * $Id$
  *
  * This file is part of the iText (R) project.
  * Copyright (c) 1998-2011 1T3XT BVBA

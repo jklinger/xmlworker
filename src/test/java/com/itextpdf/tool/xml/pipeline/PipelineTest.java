@@ -1,5 +1,5 @@
 /*
- * $Id: AlignAndMarginTest.java 99 2011-05-25 12:49:57Z redlab_b $
+ * $Id$
  *
  * This file is part of the iText (R) project.
  * Copyright (c) 1998-2011 1T3XT BVBA
@@ -72,30 +72,48 @@ public class PipelineTest {
 			super(next);
 		}
 	}
+
+	/** Init test. */
 	@Before
 	public void setup() {
 		abstractPipelineExtension = new AbstractPipelineExtension(null);
 		ap = new AbstractPipeline<CustomContext>(abstractPipelineExtension) {
 		};
 	}
+	/**
+	 * Expect a {@link NoCustomContextException} on calling getNewNoCustomContext.
+	 * @throws NoCustomContextException
+	 */
 	@Test(expected=NoCustomContextException.class)
 	public void validateNoCustomContextExceptionThrown() throws NoCustomContextException {
 		AbstractPipeline<?> ap = new AbstractPipeline<CustomContext>(null) {
 		};
 		ap.getNewCustomContext();
 	}
+	/**
+	 * Verify that getNext actually returns the next pipeline.
+	 */
 	@Test
 	public void validateNext() {
 		Assert.assertEquals(abstractPipelineExtension, ap.getNext());
 	}
+	/**
+	 * Verify that close actually returns the next pipeline.
+	 */
 	@Test
 	public void validateNextClose() throws PipelineException {
 		Assert.assertEquals(abstractPipelineExtension, ap.close(null, null));
 	}
+	/**
+	 * Verify that open actually returns the next pipeline.
+	 */
 	@Test
 	public void validateNextOpen() throws PipelineException {
 		Assert.assertEquals(abstractPipelineExtension, ap.open(null, null));
 	}
+	/**
+	 * Verify that content actually returns the next pipeline.
+	 */
 	@Test
 	public void validateNextContent() throws PipelineException {
 		Assert.assertEquals(abstractPipelineExtension, ap.content(null, null, null));
