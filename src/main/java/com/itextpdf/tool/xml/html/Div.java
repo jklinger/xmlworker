@@ -108,9 +108,6 @@ public class Div extends AbstractTagProcessor {
 					}
 					p.add(e);
 				}
-				// 1 methode voor deze en
-				// AbstractTagProcessor#currentContentToWritables en
-				// TableData#end?
 			}
 			if (p != null) {
 				p = new ParagraphCssApplier(getHtmlPipelineContext()).apply(p, tag);
