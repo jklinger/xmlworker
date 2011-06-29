@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: CSSFilesTest.java 164 2011-06-07 10:39:10Z redlab_b $
  *
  * This file is part of the iText (R) project.
  * Copyright (c) 1998-2011 1T3XT BVBA
@@ -41,42 +41,32 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml.html.tps;
+package com.itextpdf.tool.xml.css;
 
-import java.util.List;
-
-import junit.framework.Assert;
-
+import org.junit.Before;
 import org.junit.Test;
 
-import com.itextpdf.text.Element;
-import com.itextpdf.tool.xml.Tag;
-import com.itextpdf.tool.xml.html.Anchor;
-
 /**
- * @author itextpdf.com
+ * @author Balder Van Camp
  *
  */
-public class AnchorTest {
+public class CssFileWrapperTest {
 
+	private CSSFileWrapper w;
 
-	/**
-	 * Validates that the content of an &lt;a&gt; is transformed to a Chunk.
-	 */
-	@Test
-	public void testContentToChunk() {
-		Anchor a = new Anchor();
-		Tag t = new Tag("dummy");
-		String content2 = "some content";
-		List<Element> ct = a.content(null , t, content2);
-		Assert.assertEquals(content2, ct.get(0).getChunks().get(0).getContent());
+	@Before
+	public void setup(){
+		CssFile css = new CssFileImpl();
+		w = new CSSFileWrapper(css , true);
 	}
 
-	/**
-	 * Verifies if {@link Achor} is a stack owner. Should be true.
-	 */
-	@Test
-	public void verifyIfStackOwner() {
-		Assert.assertTrue(new Anchor().isStackOwner());
+
+	@Test(expected=UnsupportedOperationException.class)
+	public void testadd() {
+		w.add("", null);
+	}
+	@Test(expected=UnsupportedOperationException.class)
+	public void testisPersistent() {
+		w.isPersistent(false);
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: XMLParserListener.java 123 2011-05-27 12:30:40Z redlab_b $
  *
  * This file is part of the iText (R) project.
  * Copyright (c) 1998-2011 1T3XT BVBA
@@ -41,42 +41,32 @@
  * For more information, please contact iText Software Corp. at this
  * address: sales@itextpdf.com
  */
-package com.itextpdf.tool.xml.html.tps;
+package com.itextpdf.tool.xml.pipeline.ctx;
 
-import java.util.List;
-
-import junit.framework.Assert;
-
-import org.junit.Test;
-
-import com.itextpdf.text.Element;
-import com.itextpdf.tool.xml.Tag;
-import com.itextpdf.tool.xml.html.Anchor;
+import com.itextpdf.tool.xml.CustomContext;
 
 /**
- * @author itextpdf.com
+ * An Object container.
+ * @author redlab_b
+ * @param <T> the type of object.
  *
  */
-public class AnchorTest {
+public class ObjectContext<T> implements CustomContext {
 
+	private T obj;
 
 	/**
-	 * Validates that the content of an &lt;a&gt; is transformed to a Chunk.
+	 * @param t the Object to contain
+	 *
 	 */
-	@Test
-	public void testContentToChunk() {
-		Anchor a = new Anchor();
-		Tag t = new Tag("dummy");
-		String content2 = "some content";
-		List<Element> ct = a.content(null , t, content2);
-		Assert.assertEquals(content2, ct.get(0).getChunks().get(0).getContent());
+	public ObjectContext(final T t) {
+		this.obj = t;
 	}
 
 	/**
-	 * Verifies if {@link Achor} is a stack owner. Should be true.
+	 * @return the contained object
 	 */
-	@Test
-	public void verifyIfStackOwner() {
-		Assert.assertTrue(new Anchor().isStackOwner());
+	public T get() {
+		return this.obj;
 	}
 }
