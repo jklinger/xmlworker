@@ -58,7 +58,7 @@ public interface TagProcessor {
 
     /**
      * This method is called when a tag has been encountered.
-     * @param ctx TODO
+     * @param ctx the WorkerContext
      * @param tag the tag encountered
      *
      * @return Element an Element to add to the current content;
@@ -68,7 +68,7 @@ public interface TagProcessor {
     /**
      * This method is called if there is text content encountered between the
      * opening and closing tags this TagProcessor is mapped to.
-     * @param ctx TODO
+     * @param ctx the WorkerContext
      * @param tag the tag encountered
      * @param content the text content between the tags this TagProcessor is
      *        mapped to.
@@ -80,7 +80,7 @@ public interface TagProcessor {
 	/**
 	 * This method is called when a closing tag has been encountered of the
 	 * TagProcessor implementation that is mapped to the tag.
-	 * @param ctx TODO
+	 * @param ctx the WorkerContext
 	 * @param tag the tag encountered
 	 * @param currentContent a list of content possibly created by TagProcessing
 	 *            of inner tags, and by <code>startElement</code> and

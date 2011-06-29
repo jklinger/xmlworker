@@ -126,7 +126,7 @@ public abstract class AbstractTagProcessor implements TagProcessor {
 	 * Classes extending AbstractTagProcessor should override this method for actions that should be done in
 	 * {@link TagProcessor#startElement(WorkerContext, Tag)}. The {@link AbstractTagProcessor#startElement(WorkerContext, Tag)} calls this method
 	 * after or before doing certain stuff, (see it's description).
-	 * @param ctx TODO
+	 * @param ctx the WorkerContext
 	 * @param tag the tag
 	 *
 	 * @return an element to be added to current content, may be null
@@ -164,7 +164,7 @@ public abstract class AbstractTagProcessor implements TagProcessor {
 	 * actions that should be done in {@link TagProcessor#endElement(WorkerContext, Tag, List)}.
 	 * The {@link AbstractTagProcessor#endElement(WorkerContext, Tag, List)} calls this method
 	 * after or before doing certain stuff, (see it's description).
-	 * @param ctx TODO
+	 * @param ctx the WorkerContext
 	 * @param tag the tag
 	 * @param currentContent the content created from e.g. inner tags, inner content and not yet added to document.
 	 *
@@ -193,7 +193,7 @@ public abstract class AbstractTagProcessor implements TagProcessor {
 	 *            returned, true if new line should be added or not.
 	 * @param applyCSS true if CSS should be applied on the paragraph
 	 * @param tag the relevant tag
-	 * @param context TODO
+	 * @param context the WorkerContext
 	 * @return a List with paragraphs
 	 */
 	public final List<Element> currentContentToParagraph(final List<Element> currentContent,
