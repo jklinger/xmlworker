@@ -42,7 +42,6 @@ package com.itextpdf.tool.xml;
 
 import java.util.Map;
 
-import com.itextpdf.text.Element;
 import com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler;
 import com.itextpdf.text.xml.simpleparser.SimpleXMLParser;
 import com.itextpdf.tool.xml.exceptions.LocaleMessages;
@@ -103,24 +102,37 @@ public class XMLWorker implements XMLParserListener {
 	 * false a {@link NoTagProcessorException} is thrown. If found the
 	 * TagProcessors startElement is called.
 	 */
-	public void startElement(String tag, final Map<String, String> attr, final String ns) {
-		if (parseHtml) {
-			tag = tag.toLowerCase();
+	public void startElement(final String tag, final Map<String, String> attr, final String ns) {
+		Tag t = createTag(tag, attr, ns);
+		WorkerContextImpl ctx = context.get();
+		if (null != ctx.getCurrentTag()) {
+			ctx.getCurrentTag().addChild(t);
 		}
-		Tag t = new Tag(tag, attr, ns);
-		if (null != current) {
-			current.addChild(t);
-		}
-		current = t;
+		ctx.setCurrentTag(t);
 		Pipeline<?> wp = rootpPipe;
 		ProcessObject po = new ProcessObject();
 		try {
-			while (null != (wp = wp.open(context.get(), t, po)))
+			while (null != (wp = wp.open(ctx, t, po)))
 				;
 		} catch (PipelineException e) {
 			throw new RuntimeWorkerException(e);
 		}
 
+	}
+
+	/**
+	 * Creates a new Tag object from the given parameters.
+	 * @param tag the tag name
+	 * @param attr the attributes
+	 * @param ns the namespace if any
+	 * @return a Tag
+	 */
+	protected Tag createTag(String tag, final Map<String, String> attr, final String ns) {
+		if (parseHtml) {
+			tag = tag.toLowerCase();
+		}
+		Tag t = new Tag(tag, attr, ns);
+		return t;
 	}
 
 	/**
@@ -144,39 +156,38 @@ public class XMLWorker implements XMLParserListener {
 		} else {
 			thetag = tag;
 		}
-		if (null != current && !thetag.equals(current.getTag())) {
+		WorkerContextImpl ctx = context.get();
+		if (null != ctx.getCurrentTag() && !thetag.equals(ctx.getCurrentTag().getTag())) {
 			throw new RuntimeWorkerException(String.format(
 					LocaleMessages.getInstance().getMessage(LocaleMessages.INVALID_NESTED_TAG), thetag,
-					current.getTag()));
+					ctx.getCurrentTag().getTag()));
 		}
 		Pipeline<?> wp = rootpPipe;
 		ProcessObject po = new ProcessObject();
 		try {
-			while (null != (wp = wp.close(context.get(), current, po)))
+			while (null != (wp = wp.close(ctx, ctx.getCurrentTag(), po)))
 				;
 		} catch (PipelineException e) {
 			throw new RuntimeWorkerException(e);
 		} finally {
-			if (null != current)
-				current = current.getParent();
+			if (null != ctx.getCurrentTag())
+				ctx.setCurrentTag(ctx.getCurrentTag().getParent());
 		}
 	}
 
 	/**
-	 * This method is called when the {@link SimpleXMLParser} encountered text.
-	 * This method searches for the current tag {@link TagProcessor} in the
-	 * given {@link TagProcessorFactory}. If none found and acceptUknown is
-	 * false a {@link NoTagProcessorException} is thrown. If found the
-	 * {@link TagProcessor#content(WorkerContext, Tag, String)} is called.<br />
-	 * The returned {@link Element} if any is added to the currentContent stack.
+	 * This method passes encountered text to the pipeline via the
+	 * {@link Pipeline#content(WorkerContext, Tag, byte[], ProcessObject)}
+	 * method.
 	 */
 	public void text(final byte[] b) {
-		if (null != current) {
+		WorkerContextImpl ctx = context.get();
+		if (null != ctx.getCurrentTag()) {
 			if (b.length > 0) {
 				Pipeline<?> wp = rootpPipe;
 				ProcessObject po = new ProcessObject();
 				try {
-					while (null != (wp = wp.content(context.get(), current, b, po)))
+					while (null != (wp = wp.content(ctx, ctx.getCurrentTag(), b, po)))
 						;
 				} catch (PipelineException e) {
 					throw new RuntimeWorkerException(e);
@@ -211,5 +222,13 @@ public class XMLWorker implements XMLParserListener {
 	 */
 	public void close() {
 		context.remove();
+	}
+
+	/**
+	 * Returns the current tag.
+	 * @return the current tag
+	 */
+	protected Tag getCurrentTag() {
+		return context.get().getCurrentTag();
 	}
 }
