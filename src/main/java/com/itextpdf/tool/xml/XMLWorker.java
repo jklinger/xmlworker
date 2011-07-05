@@ -43,14 +43,9 @@ package com.itextpdf.tool.xml;
 import java.util.Map;
 
 import com.itextpdf.text.xml.simpleparser.SimpleXMLDocHandler;
-import com.itextpdf.text.xml.simpleparser.SimpleXMLParser;
 import com.itextpdf.tool.xml.exceptions.LocaleMessages;
-import com.itextpdf.tool.xml.exceptions.NoTagProcessorException;
 import com.itextpdf.tool.xml.exceptions.RuntimeWorkerException;
-import com.itextpdf.tool.xml.html.TagProcessor;
-import com.itextpdf.tool.xml.html.TagProcessorFactory;
 import com.itextpdf.tool.xml.parser.XMLParserListener;
-import com.itextpdf.tool.xml.pipeline.css.CSSResolver;
 import com.itextpdf.tool.xml.pipeline.ctx.WorkerContextImpl;
 
 /**
@@ -62,7 +57,6 @@ import com.itextpdf.tool.xml.pipeline.ctx.WorkerContextImpl;
  */
 public class XMLWorker implements XMLParserListener {
 
-	private Tag current = null;
 	private final Pipeline<?> rootpPipe;
 	private static ThreadLocal<WorkerContextImpl> context = new ThreadLocal<WorkerContextImpl>() {
 		@Override
@@ -92,16 +86,7 @@ public class XMLWorker implements XMLParserListener {
 			throw new RuntimeWorkerException(e);
 		}
 	}
-	/**
-	 * Called when a starting tag has been encountered by the
-	 * {@link SimpleXMLParser}. This method creates a {@link Tag} for the
-	 * encountered tag. The parent for the encountered tag is set if any. The
-	 * css is resolved with the given {@link CSSResolver} if any. A
-	 * {@link TagProcessor} for the encountered {@link Tag} is loaded from the
-	 * given {@link TagProcessorFactory}. If none found and acceptUknown is
-	 * false a {@link NoTagProcessorException} is thrown. If found the
-	 * TagProcessors startElement is called.
-	 */
+
 	public void startElement(final String tag, final Map<String, String> attr, final String ns) {
 		Tag t = createTag(tag, attr, ns);
 		WorkerContextImpl ctx = context.get();
@@ -135,20 +120,6 @@ public class XMLWorker implements XMLParserListener {
 		return t;
 	}
 
-	/**
-	 * Called when an ending tag is encountered by the {@link SimpleXMLParser}.
-	 * This method searches for the tags {@link TagProcessor} in the given
-	 * {@link TagProcessorFactory}. If none found and acceptUknown is false a
-	 * {@link NoTagProcessorException} is thrown. If found the TagProcessors
-	 * endElement is called.<br />
-	 * The returned Element by the TagProcessor is added to the currentContent
-	 * stack.<br />
-	 * If any of the parent tags or the given tags
-	 * {@link TagProcessor#isStackOwner()} is true. The returned Element is put
-	 * on the respective stack.Else it element is added to the document or the
-	 * elementList.
-	 *
-	 */
 	public void endElement(final String tag, final String ns) {
 		String thetag = null;
 		if (parseHtml) {
