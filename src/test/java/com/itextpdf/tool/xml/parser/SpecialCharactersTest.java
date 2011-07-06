@@ -19,7 +19,6 @@ import com.itextpdf.tool.xml.parser.state.SpecialCharState;
  */
 public class SpecialCharactersTest {
 
-
 	private String regHtml;
 	private int reg;
 	private SpecialCharState scState;
@@ -27,6 +26,7 @@ public class SpecialCharactersTest {
 	private String regStr;
 	private InsideTagHTMLState itState;
 	private int hex;
+	private String e;
 
 	@Before
 	public void setUp() {
@@ -37,6 +37,8 @@ public class SpecialCharactersTest {
 		regHtml = "&reg";
 		regStr = "�";
 		hex = 0x00ae;
+		e = "Travailleur ou chômeur, ouvrier, employé ou cadre, homme ou femme, jeune ou moins jeune,... au Syndicat libéral vous n'êtes pas un numéro et vous pouvez compter sur l'aide de l'ensemble de nos collaborateurs.";
+
 	}
 
 	@Test
@@ -46,6 +48,7 @@ public class SpecialCharactersTest {
 		System.out.println(str);
 		Assert.assertEquals(hex, str.charAt(0));
 	}
+
 	@Test
 	public void testHtmlChar() throws UnsupportedEncodingException {
 		scState.process('r');
@@ -54,5 +57,14 @@ public class SpecialCharactersTest {
 		scState.process(';');
 		String str = new String(parser.memory().current().toByteArray(), "ISO-8859-1");
 		Assert.assertEquals(hex, str.charAt(0));
+	}
+
+	@Test
+	public void testEéçEtc() throws UnsupportedEncodingException {
+		for (int i = 0; i < e.length(); i++) {
+			itState.process(e.codePointAt(i));
+		}
+		String str = new String(parser.memory().current().toByteArray(), "ISO-8859-1");
+		Assert.assertEquals(e, str);
 	}
 }
