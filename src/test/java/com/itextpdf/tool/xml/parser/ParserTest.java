@@ -45,6 +45,7 @@ package com.itextpdf.tool.xml.parser;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Map;
 
 import junit.framework.Assert;
@@ -103,41 +104,28 @@ public class ParserTest {
 		XMLParser p = new XMLParser(false, new XMLParserListener() {
 
 			public void unknownText(final String text) {
-				// TODO Auto-generated method stub
-
 			}
 
 			public void text(final byte[] text) {
 				org.junit.Assert.assertArrayEquals("eéèçàë".getBytes(), text);
-
 			}
 
 			public void startElement(final String tag, final Map<String, String> attributes, final String ns) {
-				// TODO Auto-generated method stub
-
 			}
 
 			public void init() {
-				// TODO Auto-generated method stub
-
 			}
 
 			public void endElement(final String tag, final String ns) {
-				// TODO Auto-generated method stub
-
 			}
 
 			public void comment(final String comment) {
-				// TODO Auto-generated method stub
-
 			}
 
 			public void close() {
-				// TODO Auto-generated method stub
-
 			}
 		});
-		p.parse(ParserTest.class.getResourceAsStream("parser.xml"));
+		p.parse(new InputStreamReader(ParserTest.class.getResourceAsStream("parser.xml"), "ISO-8859-1"));
 	}
 
 	/**
