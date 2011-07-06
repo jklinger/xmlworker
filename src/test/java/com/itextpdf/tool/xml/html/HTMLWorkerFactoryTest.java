@@ -46,7 +46,6 @@ import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 
 import org.junit.Test;
 
@@ -101,7 +100,7 @@ public class HTMLWorkerFactoryTest {
 //	  private static final String TEST = "position_";
 //	  private static final String TEST = "h_";
 //	  private static final String TEST = "booksales_";
-	  private static final String TEST = "index_";
+//	  private static final String TEST = "index_";
 //	  private static final String TEST = "headers_";
 //	  private static final String TEST = "headers_noroottag_";
 //	  private static final String TEST = "index_anchor_";
@@ -111,7 +110,7 @@ public class HTMLWorkerFactoryTest {
 //	  private static final String TEST ="test-table-a_";
 //	  private static final String TEST ="test-table-b_";
 //	  private static final String TEST ="test-table-c_";
-//	  private static final String TEST ="test-table-d_";
+	  private static final String TEST ="test-table-d_";
 //	  private static final String TEST = "pagebreaks_";
 
     static {
@@ -139,7 +138,7 @@ public class HTMLWorkerFactoryTest {
 		cssFiles.add(XMLWorkerHelper.getInstance().getDefaultCSS());
 		StyleAttrCSSResolver cssResolver = new StyleAttrCSSResolver(cssFiles);
 		HtmlPipelineContext hpc = new HtmlPipelineContext();
-		hpc.setAcceptUnknown(true).autoBookmark(true).setTagFactory(Tags.getHtmlTagProcessorFactory()).charSet(Charset.forName("ISO-8859-1"));
+		hpc.setAcceptUnknown(true).autoBookmark(true).setTagFactory(Tags.getHtmlTagProcessorFactory());
 		Pipeline pipeline = new CssResolverPipeline(cssResolver, new HtmlPipeline(hpc, new PdfWriterPipeline(doc, writer)));
 		XMLWorker worker = new XMLWorker(pipeline, true);
 		doc.open();
