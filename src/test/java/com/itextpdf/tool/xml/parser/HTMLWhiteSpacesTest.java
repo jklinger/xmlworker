@@ -27,44 +27,28 @@ public class HTMLWhiteSpacesTest {
 		str = "<body><b>&euro;<b> 124</body>";
 	}
 
+	/**
+	 * See that a space is not removed after a special char.
+	 * @throws IOException
+	 */
 	@Test
 	public void checkIfSpaceIsStillThere() throws IOException {
 		final StringBuilder b = new StringBuilder();
 		XMLParser p = new XMLParser(true, new XMLParserListener() {
-
 			public void unknownText(final String text) {
-				// TODO Auto-generated method stub
-
 			}
-
 			public void text(final String text) {
 				b.append(text);
-
 			}
-
 			public void startElement(final String tag, final Map<String, String> attributes, final String ns) {
-				// TODO Auto-generated method stub
-
 			}
-
 			public void init() {
-				// TODO Auto-generated method stub
-
 			}
-
 			public void endElement(final String tag, final String ns) {
-				// TODO Auto-generated method stub
-
 			}
-
 			public void comment(final String comment) {
-				// TODO Auto-generated method stub
-
 			}
-
 			public void close() {
-				// TODO Auto-generated method stub
-
 			}
 		});
 		p.parse(new StringReader(str));
