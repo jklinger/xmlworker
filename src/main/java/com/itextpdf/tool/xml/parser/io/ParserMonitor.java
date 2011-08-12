@@ -52,8 +52,8 @@ public interface ParserMonitor {
 
 	/**
 	 * Called when read is called.
-	 * @param i the int read.
+	 * @param c the int read.
 	 */
-	void read(int i);
+	void read(char[] c);
 
 }
