@@ -44,7 +44,7 @@
 package com.itextpdf.tool.xml.parser.io;
 
 /**
- * Monitors what is read.
+ * Monitors what is being read.
  * @author redlab_b
  *
  */
@@ -52,7 +52,7 @@ public interface ParserMonitor {
 
 	/**
 	 * Called when read is called.
-	 * @param c the int read.
+	 * @param c the char read.
 	 */
 	void read(char[] c);
 
