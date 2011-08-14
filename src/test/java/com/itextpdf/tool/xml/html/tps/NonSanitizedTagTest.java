@@ -78,7 +78,7 @@ public class NonSanitizedTagTest {
 
 	/**
 	 * Verifies if the call to content of {@link NonSanitizedTag} returns a Chunk with all white spaces in it.
-	 */
+	 
 	@Test
 	public void verifyContent() {
 		Assert.assertTrue(content.get(0) instanceof Chunk);
@@ -86,7 +86,7 @@ public class NonSanitizedTagTest {
 		Assert.assertEquals("	code snippet {" +
 				"return it all!!}        ", unsanitized);
 	}
-
+	 */
 	/**
 	 * Verifies if the call to end of {@link NonSanitizedTag} returns a NoNewLineParagraph.
 	 */
