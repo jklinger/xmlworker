@@ -1,5 +1,5 @@
 /*
- * $Id: CssApplier.java 28 201ç1-05-05 20:33:36Z redlab_b $
+ * $Id$
  *
  * This file is part of the iText (R) project. Copyright (c) 1998-2011 1T3XT BVBA Authors: Balder Van Camp, Emiel
  * Ackermann, et al.
