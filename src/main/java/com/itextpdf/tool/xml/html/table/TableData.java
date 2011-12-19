@@ -79,11 +79,6 @@ public class TableData extends AbstractTagProcessor {
 			final String content) {
 		String sanitized = HTMLUtils.sanitizeInline(content);
 		List<Element> l = new ArrayList<Element>(1);
-		
-		//added by Jeroen Nouws
-		System.out.println("CSS");
-		for (Map.Entry<String, String> entry : tag.getCSS().entrySet())
-			System.out.println(entry.getKey() + " :" + entry.getValue());
 
 		if (sanitized.length() > 0) {
 			Chunk c = new ChunkCssApplier().apply(new Chunk(sanitized), tag);
