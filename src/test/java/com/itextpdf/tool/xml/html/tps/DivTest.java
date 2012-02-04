@@ -55,6 +55,7 @@ import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.tool.xml.Tag;
+import com.itextpdf.tool.xml.html.CssAppliersImpl;
 import com.itextpdf.tool.xml.html.Div;
 import com.itextpdf.tool.xml.html.pdfelement.NoNewLineParagraph;
 import com.itextpdf.tool.xml.pipeline.ctx.WorkerContextImpl;
@@ -78,6 +79,7 @@ public class DivTest {
 		currentContent.add(Chunk.NEWLINE);
 		currentContent.add(new NoNewLineParagraph("first content text"));
 		currentContent.add(new Paragraph("footer text"));
+		d.setCssAppliers(new CssAppliersImpl());
 	}
 
 	/**

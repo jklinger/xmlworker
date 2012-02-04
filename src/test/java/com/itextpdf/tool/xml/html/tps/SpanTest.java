@@ -53,6 +53,7 @@ import org.junit.Test;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Element;
 import com.itextpdf.tool.xml.Tag;
+import com.itextpdf.tool.xml.html.CssAppliersImpl;
 import com.itextpdf.tool.xml.html.Span;
 import com.itextpdf.tool.xml.html.pdfelement.NoNewLineParagraph;
 import com.itextpdf.tool.xml.pipeline.ctx.WorkerContextImpl;
@@ -72,6 +73,7 @@ public class SpanTest {
 	public void init() {
 		workerContextImpl = new WorkerContextImpl();
 		workerContextImpl.put(HtmlPipeline.class.getName(), new HtmlPipelineContext());
+		s.setCssAppliers(new CssAppliersImpl());
 		content = s.content(workerContextImpl, new Tag("span"), "	text snippet " +
 		"return it sanitized!!       ");
 	}

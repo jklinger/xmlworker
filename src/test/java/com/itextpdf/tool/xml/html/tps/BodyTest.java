@@ -53,6 +53,7 @@ import org.junit.Test;
 import com.itextpdf.text.Element;
 import com.itextpdf.tool.xml.Tag;
 import com.itextpdf.tool.xml.html.Body;
+import com.itextpdf.tool.xml.html.CssAppliersImpl;
 import com.itextpdf.tool.xml.html.pdfelement.NoNewLineParagraph;
 import com.itextpdf.tool.xml.pipeline.ctx.WorkerContextImpl;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
@@ -68,6 +69,7 @@ public class BodyTest {
 
 	@Before
 	public void init() {
+		b.setCssAppliers(new CssAppliersImpl());
 		workerContextImpl = new WorkerContextImpl();
 		workerContextImpl.put(HtmlPipeline.class.getName(), new HtmlPipelineContext());
 	}

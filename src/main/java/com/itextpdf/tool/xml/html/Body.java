@@ -59,7 +59,7 @@ public class Body extends AbstractTagProcessor {
 		List<Element> l = new ArrayList<Element>(1);
 		if (sanitized.length() > 0) {
 			try {
-				l.add(CssAppliers.getInstance().apply(new NoNewLineParagraph(sanitized), tag, getHtmlPipelineContext(ctx)));
+				l.add(getCssAppliers().apply(new NoNewLineParagraph(sanitized), tag, getHtmlPipelineContext(ctx)));
 			} catch (NoCustomContextException e) {
 				throw new RuntimeWorkerException(LocaleMessages.getInstance().getMessage(LocaleMessages.NO_CUSTOM_CONTEXT), e);
 			}
