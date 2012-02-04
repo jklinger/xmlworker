@@ -55,7 +55,6 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.WritableDirectElement;
 import com.itextpdf.tool.xml.Tag;
-import com.itextpdf.tool.xml.html.CssAppliersImpl;
 import com.itextpdf.tool.xml.html.Header;
 import com.itextpdf.tool.xml.pipeline.ctx.WorkerContextImpl;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
@@ -76,7 +75,6 @@ public class HeaderTest {
 
 	@Before
 	public void init() {
-		h.setCssAppliers(new CssAppliersImpl());
 		workerContextImpl = new WorkerContextImpl();
 		workerContextImpl.put(HtmlPipeline.class.getName(), new HtmlPipelineContext().autoBookmark(true));
 		content = h.content(workerContextImpl, H2, "text inside a header tag");

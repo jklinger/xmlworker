@@ -61,9 +61,6 @@ import com.itextpdf.tool.xml.css.apply.ListStyleTypeCssApplier;
 import com.itextpdf.tool.xml.css.apply.MarginMemory;
 import com.itextpdf.tool.xml.css.apply.PageSizeContainable;
 import com.itextpdf.tool.xml.exceptions.NoDataException;
-import com.itextpdf.tool.xml.html.CssAppliers;
-import com.itextpdf.tool.xml.html.CssAppliersAware;
-import com.itextpdf.tool.xml.html.CssAppliersImpl;
 import com.itextpdf.tool.xml.html.Header;
 import com.itextpdf.tool.xml.html.Image;
 import com.itextpdf.tool.xml.html.TagProcessor;
@@ -76,8 +73,7 @@ import com.itextpdf.tool.xml.html.Tags;
  * @author redlab_b
  *
  */
-public class HtmlPipelineContext implements CustomContext, Cloneable, MarginMemory, PageSizeContainable,
-		CssAppliersAware {
+public class HtmlPipelineContext implements CustomContext, Cloneable, MarginMemory, PageSizeContainable {
 
 	/**
 	 *  Key for the memory, used to store bookmark nodes
@@ -98,7 +94,6 @@ public class HtmlPipelineContext implements CustomContext, Cloneable, MarginMemo
 	private LinkProvider linkprovider;
 	private boolean autoBookmark = true;
 	private final Map<String, Object> memory;
-	private CssAppliers cssAppliers;
 
 	/**
 	 * Construct a new HtmlPipelineContext object
@@ -106,7 +101,6 @@ public class HtmlPipelineContext implements CustomContext, Cloneable, MarginMemo
 	public HtmlPipelineContext() {
 		this.queue = new LinkedList<StackKeeper>();
 		this.memory = new HashMap<String, Object>();
-		this.cssAppliers = new CssAppliersImpl();
 	}
 	/**
 	 * @param tag the tag to find a TagProcessor for
@@ -115,9 +109,6 @@ public class HtmlPipelineContext implements CustomContext, Cloneable, MarginMemo
 	 */
 	protected TagProcessor resolveProcessor(final String tag, final String nameSpace) {
 		TagProcessor tp = tagFactory.getProcessor(tag, nameSpace);
-		if (tp instanceof CssAppliersAware) {
-			((CssAppliersAware) tp).setCssAppliers(this.cssAppliers);
-		}
 		return tp;
 	}
 
@@ -281,7 +272,7 @@ public class HtmlPipelineContext implements CustomContext, Cloneable, MarginMemo
 		}
 		newCtx.setPageSize(new Rectangle(this.pageSize)).setLinkProvider(this.linkprovider)
 				.setRootTags(new ArrayList<String>(this.roottags)).autoBookmark(this.autoBookmark)
-				.setTagFactory(this.tagFactory).setAcceptUnknown(this.acceptUnknown).setCssApplier(this.cssAppliers);
+				.setTagFactory(this.tagFactory).setAcceptUnknown(this.acceptUnknown);
 		return newCtx;
 	}
 
@@ -373,32 +364,4 @@ public class HtmlPipelineContext implements CustomContext, Cloneable, MarginMemo
 		getMemory().put(HtmlPipelineContext.LAST_MARGIN_BOTTOM, lmb);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.itextpdf.tool.xml.html.CssAppliersAware#setCssAppliers(com.itextpdf.tool.xml.html.CssAppliers)
-	 */
-	public void setCssAppliers(final CssAppliers cssAppliers) {
-		this.cssAppliers = cssAppliers;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.itextpdf.tool.xml.html.CssAppliersAware#getCssAppliers()
-	 */
-	public CssAppliers getCssAppliers() {
-		return cssAppliers;
-	}
-
-	/**
-	 * Fluent variant of {@link #setCssAppliers(CssAppliers)}
-	 *
-	 * @param cssAppliers the cssAppliers
-	 * @return this
-	 */
-	public HtmlPipelineContext setCssApplier(final CssAppliers cssAppliers) {
-		this.cssAppliers = cssAppliers;
-		return this;
-	}
 }

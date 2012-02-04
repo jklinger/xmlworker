@@ -55,7 +55,6 @@ import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.ListItem;
 import com.itextpdf.tool.xml.Tag;
-import com.itextpdf.tool.xml.html.CssAppliersImpl;
 import com.itextpdf.tool.xml.html.OrderedUnorderedListItem;
 import com.itextpdf.tool.xml.pipeline.ctx.WorkerContextImpl;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
@@ -72,7 +71,6 @@ public class ListItemTest {
 
 	@Before
 	public void init() {
-		li.setCssAppliers(new CssAppliersImpl());
 		workerContextImpl = new WorkerContextImpl();
 		workerContextImpl.put(HtmlPipeline.class.getName(), new HtmlPipelineContext());
 		currentContent.addAll(li.content(workerContextImpl, new Tag("li"), "list item"));

@@ -55,7 +55,6 @@ import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.tool.xml.Tag;
-import com.itextpdf.tool.xml.html.CssAppliersImpl;
 import com.itextpdf.tool.xml.html.ParaGraph;
 import com.itextpdf.tool.xml.pipeline.ctx.WorkerContextImpl;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
@@ -73,7 +72,6 @@ public class ParaGraphTest {
 	@Before
 	public void init() {
 		workerContextImpl = new WorkerContextImpl();
-		p.setCssAppliers(new CssAppliersImpl());
 		workerContextImpl.put(HtmlPipeline.class.getName(), new HtmlPipelineContext());
 		currentContent.addAll(p.content(workerContextImpl, new Tag("p"), "some paragraph text"));
 	}

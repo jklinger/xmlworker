@@ -66,10 +66,9 @@ import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
  * @author redlab_b
  *
  */
-public abstract class AbstractTagProcessor implements TagProcessor, CssAppliersAware {
+public abstract class AbstractTagProcessor implements TagProcessor {
 
 	private final FontSizeTranslator fontsizeTrans;
-	private CssAppliers cssAppliers;
 
 	/**
 	 *
@@ -211,7 +210,7 @@ public abstract class AbstractTagProcessor implements TagProcessor, CssAppliersA
 						p.add(e);
 					}
 					if (applyCSS) {
-						p = (Paragraph) getCssAppliers().apply(p, tag, getHtmlPipelineContext(ctx));
+						p = (Paragraph) CssAppliers.getInstance().apply(p, tag, getHtmlPipelineContext(ctx));
 					}
 					list.add(p);
 				} else {
@@ -219,7 +218,7 @@ public abstract class AbstractTagProcessor implements TagProcessor, CssAppliersA
 					for (Element e : currentContent) {
 						p.add(e);
 					}
-					p = (NoNewLineParagraph) getCssAppliers().apply(p, tag, getHtmlPipelineContext(ctx));
+					p = (NoNewLineParagraph) CssAppliers.getInstance().apply(p, tag, getHtmlPipelineContext(ctx));
 					list.add(p);
 				}
 			}
@@ -240,23 +239,5 @@ public abstract class AbstractTagProcessor implements TagProcessor, CssAppliersA
 	public final List<Element> currentContentToParagraph(final List<Element> currentContent,
 			final boolean addNewLines) {
 		return this.currentContentToParagraph(currentContent, addNewLines, false, null, null);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.itextpdf.tool.xml.html.CssAppliersAware#setCssAppliers(com.itextpdf.tool.xml.html.CssAppliers)
-	 */
-	public void setCssAppliers(final CssAppliers cssAppliers) {
-		this.cssAppliers = cssAppliers;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.itextpdf.tool.xml.html.CssAppliersAware#getCssAppliers()
-	 */
-	public CssAppliers getCssAppliers() {
-		return cssAppliers;
 	}
 }

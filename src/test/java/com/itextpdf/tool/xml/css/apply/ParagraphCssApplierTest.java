@@ -51,7 +51,6 @@ import com.itextpdf.text.log.SysoLogger;
 import com.itextpdf.tool.xml.Tag;
 import com.itextpdf.tool.xml.css.CSS;
 import com.itextpdf.tool.xml.css.FontSizeTranslator;
-import com.itextpdf.tool.xml.html.CssAppliersImpl;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -65,9 +64,6 @@ public class ParagraphCssApplierTest {
     /**
      *
      */
-	static {
-		LoggerFactory.getInstance().setLogger(new SysoLogger(3));
-	}
     private static final FontSizeTranslator fst = FontSizeTranslator.getInstance();
     private Tag parent;
     private Tag first;
@@ -75,11 +71,12 @@ public class ParagraphCssApplierTest {
     private Tag child;
     private Paragraph firstPara;
     private Paragraph secondPara;
-	private final ParagraphCssApplier applier = new ParagraphCssApplier(new CssAppliersImpl());
+    private final ParagraphCssApplier applier = new ParagraphCssApplier();
     private HtmlPipelineContext configuration;
 
     @Before
     public void setup() {
+        LoggerFactory.getInstance().setLogger(new SysoLogger(3));
         parent = new Tag("body");
         parent.getCSS().put(CSS.Property.FONT_FAMILY, "Helvetica");
         parent.getCSS().put(CSS.Property.FONT_SIZE, "12pt");

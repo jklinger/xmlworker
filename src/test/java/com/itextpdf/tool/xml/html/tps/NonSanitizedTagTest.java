@@ -53,7 +53,6 @@ import org.junit.Test;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Element;
 import com.itextpdf.tool.xml.Tag;
-import com.itextpdf.tool.xml.html.CssAppliersImpl;
 import com.itextpdf.tool.xml.html.NonSanitizedTag;
 import com.itextpdf.tool.xml.html.pdfelement.NoNewLineParagraph;
 import com.itextpdf.tool.xml.pipeline.ctx.WorkerContextImpl;
@@ -73,7 +72,6 @@ public class NonSanitizedTagTest {
 	public void init() {
 		workerContextImpl = new WorkerContextImpl();
 		workerContextImpl.put(HtmlPipeline.class.getName(), new HtmlPipelineContext());
-		t.setCssAppliers(new CssAppliersImpl());
 		content = t.content(workerContextImpl, new Tag("pre"), "   code snippet {" +
 		"return it all!!}        ");
 	}
@@ -81,7 +79,7 @@ public class NonSanitizedTagTest {
 	/**
 	 * Verifies if the call to content of {@link NonSanitizedTag} returns a Chunk with all white spaces in it.
 	 */
-
+	 
 	@Test
 	public void verifyContent() {
 		Assert.assertTrue(content.get(0) instanceof Chunk);
