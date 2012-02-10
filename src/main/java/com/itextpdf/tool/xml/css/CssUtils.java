@@ -597,4 +597,19 @@ public class CssUtils {
 		}
 		return marginTop;
 	}
+
+	/**
+	 * Trims a string and removes surrounding " or '.
+	 * 
+	 * @param the string
+	 * @param s TODO
+	 * @return trimmed and unquoted string
+	 */
+	public String trimAndRemoveQuoutes(String s) {
+		s = s.trim();
+		if ((s.startsWith("\"") || s.startsWith("'")) && s.endsWith("\"") || s.endsWith("'")) {
+			s = s.substring(1, s.length() - 1);
+		}
+		return s;
+	}
 }
