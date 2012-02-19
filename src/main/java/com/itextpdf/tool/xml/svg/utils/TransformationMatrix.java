@@ -43,11 +43,11 @@
  */
 package com.itextpdf.tool.xml.svg.utils;
 
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import com.itextpdf.text.geom.AffineTransform;
 import com.itextpdf.tool.xml.svg.exceptions.SvgParseException;
 
 

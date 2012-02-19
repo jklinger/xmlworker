@@ -43,13 +43,13 @@
  */
 package com.itextpdf.tool.xml.svg.graphic;
 
-import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
 import com.itextpdf.text.Element;
+import com.itextpdf.text.geom.AffineTransform;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.tool.xml.svg.tags.Graphic;

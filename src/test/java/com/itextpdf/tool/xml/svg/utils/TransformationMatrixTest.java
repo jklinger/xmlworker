@@ -1,6 +1,5 @@
 package com.itextpdf.tool.xml.svg.utils;
 
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +7,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.itextpdf.text.geom.AffineTransform;
 import com.itextpdf.tool.xml.svg.utils.TransformationMatrix;
 
 
