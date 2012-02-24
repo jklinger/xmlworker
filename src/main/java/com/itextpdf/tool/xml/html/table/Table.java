@@ -357,8 +357,13 @@ public class Table extends AbstractTagProcessor {
 				}
 			}
 			try {
-				table.setTotalWidth(columnWidths);
-				table.setLockedWidth(locked);
+				if (locked) {
+					table.setTotalWidth(columnWidths);
+					table.setLockedWidth(true);
+				}
+				else {
+					table.setWidthPercentage(utils.parsePxInCmMmPcToPt(widthValue));
+				}
 				table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 			} catch (DocumentException e) {
 				throw new RuntimeWorkerException(LocaleMessages.getInstance().getMessage(
