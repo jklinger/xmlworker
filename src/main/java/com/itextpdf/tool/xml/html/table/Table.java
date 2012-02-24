@@ -126,13 +126,13 @@ public class Table extends AbstractTagProcessor {
 	@Override
 	public List<Element> end(final WorkerContext ctx, final Tag tag, final List<Element> currentContent) {
 		try {
-			boolean locked = true;
+			boolean percentage = false;
 			String widthValue = tag.getCSS().get(HTML.Attribute.WIDTH);
 			if(widthValue == null) {
 				widthValue = tag.getAttributes().get(HTML.Attribute.WIDTH);
 			}
 			if(widthValue != null && widthValue.trim().endsWith("%")) {
-				locked = false;
+				percentage = true;
 			}
 			int numberOfColumns = 0;
 			List<TableRowElement> tableRows = new ArrayList<TableRowElement>(currentContent.size());
@@ -357,13 +357,8 @@ public class Table extends AbstractTagProcessor {
 				}
 			}
 			try {
-				if (locked) {
-					table.setTotalWidth(columnWidths);
-					table.setLockedWidth(true);
-				}
-				else {
-					table.setWidthPercentage(utils.parsePxInCmMmPcToPt(widthValue));
-				}
+				table.setTotalWidth(columnWidths);
+				table.setLockedWidth(true);
 				table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 			} catch (DocumentException e) {
 				throw new RuntimeWorkerException(LocaleMessages.getInstance().getMessage(
@@ -407,6 +402,10 @@ public class Table extends AbstractTagProcessor {
 					table.addCell(cell);
 				}
 				table.completeRow();
+			}
+			if (percentage) {
+				table.setWidthPercentage(utils.parsePxInCmMmPcToPt(widthValue));
+				table.setLockedWidth(false);
 			}
 			List<Element> elems = new ArrayList<Element>();
 			if (invalidRowElements.size() > 0) {
