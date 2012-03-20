@@ -252,7 +252,7 @@ public class XMLParser {
      */
     public InputStreamReader detectEncoding(final InputStream in) throws IOException, UnsupportedEncodingException {
         // we expect a '>' in the first 100 characters
-    	in.mark(100);
+    	in.mark(1028);
     	byte b4[] = new byte[4];
         int count = in.read(b4);
         if (count != 4)
