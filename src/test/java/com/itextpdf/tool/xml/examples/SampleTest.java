@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -120,8 +121,8 @@ public class SampleTest {
         HtmlPipeline htmlPipeline = new HtmlPipeline(hpc, new PdfWriterPipeline(doc, pdfWriter));
         Pipeline<?> pipeline = new CssResolverPipeline(cssResolver, htmlPipeline);
         XMLWorker worker = new XMLWorker(pipeline, true);
-        XMLParser p = new XMLParser(true, worker, null);
-		p.parse(new FileInputStream(inputHtml));
+        XMLParser p = new XMLParser(true, worker, Charset.forName("UTF-8"));
+		p.parse(new FileInputStream(inputHtml), Charset.forName("UTF-8"));
         doc.close();
     }
 
