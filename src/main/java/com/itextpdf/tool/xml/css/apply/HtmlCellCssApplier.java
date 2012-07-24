@@ -198,10 +198,6 @@ public class HtmlCellCssApplier {
 					}
 				}
 	    	}
-			/*float horSpacing = Table.getBorderOrCellSpacing(true, table.getCSS(), table.getAttributes());
-			float verSpacing = Table.getBorderOrCellSpacing(false, table.getCSS(), table.getAttributes());
-	    	values.setHorBorderSpacing(horSpacing);
-	    	values.setVerBorderSpacing(verSpacing);*/
 	    	cell.setPaddingLeft(cell.getPaddingLeft() + values.getHorBorderSpacing() + values.getBorderWidthLeft());
 			cell.setPaddingRight(cell.getPaddingRight() + values.getBorderWidthRight());
 	    	cell.setPaddingTop(cell.getPaddingTop() + values.getVerBorderSpacing() + values.getBorderWidthTop());
