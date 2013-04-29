@@ -206,10 +206,6 @@ public class StyleAttrCSSResolver implements CSSResolver {
             else if (t.getName().equals(HTML.Tag.SMALL)){
                 css.put(CSS.Property.FONT_SIZE, CSS.Value.SMALLER);
             }
-            else if (t.getName().equals(HTML.Tag.A)) {
-                css.put(CSS.Property.TEXT_DECORATION, CSS.Value.UNDERLINE);
-                css.put(CSS.Property.COLOR, "blue");
-            }
         }
 
         if (listCss != null && listCss.containsKey(CSS.Property.LIST_STYLE_TYPE)) {
@@ -239,21 +235,26 @@ public class StyleAttrCSSResolver implements CSSResolver {
 			}
 		}
 
-        if (t.getName().equals(HTML.Tag.FONT)) {
-            String font_family = t.getAttributes().get(HTML.Attribute.FACE);
-            if (font_family != null) css.put(CSS.Property.FONT_FAMILY, font_family);
-            String color = t.getAttributes().get(HTML.Attribute.COLOR);
-            if (color != null) css.put(CSS.Property.COLOR, color);
-            String size = t.getAttributes().get(HTML.Attribute.SIZE);
-            if (size != null) {
-                if(size.equals("1"))        css.put(CSS.Property.FONT_SIZE, CSS.Value.XX_SMALL);
-                else if(size.equals("2"))   css.put(CSS.Property.FONT_SIZE, CSS.Value.X_SMALL);
-                else if(size.equals("3"))   css.put(CSS.Property.FONT_SIZE, CSS.Value.SMALL);
-                else if(size.equals("4"))   css.put(CSS.Property.FONT_SIZE, CSS.Value.MEDIUM);
-                else if(size.equals("5"))   css.put(CSS.Property.FONT_SIZE, CSS.Value.LARGE);
-                else if(size.equals("6"))   css.put(CSS.Property.FONT_SIZE, CSS.Value.X_LARGE);
-                else if(size.equals("7"))   css.put(CSS.Property.FONT_SIZE, CSS.Value.XX_LARGE);
+        if (t.getName() != null) {
+            if (t.getName().equals(HTML.Tag.FONT)) {
+                String font_family = t.getAttributes().get(HTML.Attribute.FACE);
+                if (font_family != null) css.put(CSS.Property.FONT_FAMILY, font_family);
+                String color = t.getAttributes().get(HTML.Attribute.COLOR);
+                if (color != null) css.put(CSS.Property.COLOR, color);
+                String size = t.getAttributes().get(HTML.Attribute.SIZE);
+                if (size != null) {
+                    if(size.equals("1"))        css.put(CSS.Property.FONT_SIZE, CSS.Value.XX_SMALL);
+                    else if(size.equals("2"))   css.put(CSS.Property.FONT_SIZE, CSS.Value.X_SMALL);
+                    else if(size.equals("3"))   css.put(CSS.Property.FONT_SIZE, CSS.Value.SMALL);
+                    else if(size.equals("4"))   css.put(CSS.Property.FONT_SIZE, CSS.Value.MEDIUM);
+                    else if(size.equals("5"))   css.put(CSS.Property.FONT_SIZE, CSS.Value.LARGE);
+                    else if(size.equals("6"))   css.put(CSS.Property.FONT_SIZE, CSS.Value.X_LARGE);
+                    else if(size.equals("7"))   css.put(CSS.Property.FONT_SIZE, CSS.Value.XX_LARGE);
 
+                }
+            } else if (t.getName().equals(HTML.Tag.A)) {
+                css.put(CSS.Property.TEXT_DECORATION, CSS.Value.UNDERLINE);
+                css.put(CSS.Property.COLOR, "blue");
             }
         }
 
