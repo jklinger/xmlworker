@@ -21,7 +21,6 @@ import com.itextpdf.tool.xml.pipeline.html.AbstractImageProvider;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.itextpdf.tool.xml.pipeline.html.ImageProvider;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,13 +69,6 @@ public class SampleTest {
         String testName = getTestName();
         if (!this.getClass().getName().equals(SampleTest.class.getName()) && (testName.length() > 0)) {
             transformHtml2Pdf();
-        }
-    }
-
-    @After
-    public void compare() throws InterruptedException, DocumentException, IOException {
-        String testName = getTestName();
-        if (!this.getClass().getName().equals(SampleTest.class.getName()) && (testName.length() > 0)) {
             if (detectCrashesAndHangUpsOnly() == false) {
                 String errorMessage = compareTool.compare(outPath, differenceImagePrefix);
                 if (errorMessage != null) {
