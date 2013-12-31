@@ -148,7 +148,7 @@
 								<link>http://api.itextpdf.com/itext/</link>
 								<link>http://api.itextpdf.com/xtra/</link>
 							</links>
-				    		<header><![CDATA[
+				    		<footer><![CDATA[
 <script type="text/javascript">
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-11854164-1']);
@@ -160,7 +160,7 @@ ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www')
 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 </script>
-    ]]></header>
+    ]]></footer>
 						</configuration>
 					</plugin>
 					<!--<plugin>
