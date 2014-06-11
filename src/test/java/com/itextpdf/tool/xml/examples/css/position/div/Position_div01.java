@@ -1,7 +1,6 @@
 package com.itextpdf.tool.xml.examples.css.position.div;
 
 import com.itextpdf.tool.xml.examples.SampleTest;
-import org.junit.Ignore;
 
 public class Position_div01 extends SampleTest {
     protected String getTestName() {
