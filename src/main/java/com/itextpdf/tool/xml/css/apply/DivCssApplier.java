@@ -91,7 +91,7 @@ public class DivCssApplier {
 				div.setWidth(Math.min(pageWidth, utils.parsePxInCmMmPcToPt(widthValue)));
             } else if (utils.isRelativeValue(widthValue)) {
                 if (widthValue.contains(CSS.Value.PERCENTAGE)) {
-                    div.setPercentageWidth(utils.parseRelativeValue(widthValue, pageWidth));
+                    div.setPercentageWidth(utils.parseRelativeValue(widthValue, 1));
                 } else {
                     div.setWidth(Math.min(pageWidth, utils.parseRelativeValue(widthValue, fontSize)));
                 }
