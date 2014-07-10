@@ -19,7 +19,6 @@ import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.itextpdf.tool.xml.pipeline.html.ImageProvider;
-import org.junit.Ignore;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -27,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
-@Ignore
 public class PageOverflow01Test  extends SampleTest {
     protected String getTestName() {
         return  "pageOverflow01";
