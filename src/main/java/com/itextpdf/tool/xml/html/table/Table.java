@@ -191,7 +191,7 @@ public class Table extends AbstractTagProcessor {
                     }
 					// sets a rowspan counter for current column (counter not
 					// needed for last column).
-					if (cell.getRowspan() > 1 && column != numberOfColumns - 1) {
+					if (cell.getRowspan() > 1 && column != numberOfColumns - 1 && column < rowspanValue.length) {
 						rowspanValue[column] = cell.getRowspan() - 1;
 					}
 					int colspan = cell.getColspan();
