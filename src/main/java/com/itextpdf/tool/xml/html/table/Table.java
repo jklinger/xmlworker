@@ -625,7 +625,7 @@ public class Table extends AbstractTagProcessor {
 
     public static TableStyleValues setBorderAttributeForCell(final Tag tag) {
         TableStyleValues styleValues = new TableStyleValues();
-
+        if (tag == null) return styleValues;
         Map<String, String> attributes = tag.getAttributes();
         Map<String, String> css = tag.getCSS();
         String border = attributes.get(CSS.Property.BORDER);
