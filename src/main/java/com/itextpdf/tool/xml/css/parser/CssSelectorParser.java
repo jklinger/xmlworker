@@ -55,22 +55,20 @@ public class CssSelectorParser {
     private static final String selectorPatternString =
             "(\\*)|([_a-zA-Z][\\w-]*)|(\\.[_a-zA-Z][\\w-]*)|(#[_a-z][\\w-]*)|(\\[[_a-zA-Z][\\w-]*(([~^$*|])?=((\"[\\w-]+\")|([\\w-]+)))?\\])|(:[\\w()-]*)|( )|(\\+)|(>)|(~)";
 
-    private static final String selectorMatcherString = "(" + selectorPatternString + ")*";
     private static final Pattern selectorPattern = Pattern.compile(selectorPatternString);
-    private static final Pattern selectorMatcher = Pattern.compile(selectorMatcherString);
 
     private static final int a = 1 << 16;
     private static final int b = 1 << 8;
     private static final int c = 1;
 
     public static List<CssSelectorItem> createCssSelector(String selector) {
-        if (!selectorMatcher.matcher(selector).matches())
-            return null;
         List<CssSelectorItem> cssSelectorItems = new ArrayList<CssSelectorItem>();
         Matcher itemMatcher = selectorPattern.matcher(selector);
         boolean isTagSelector = false;
+        int crc = 0;
         while(itemMatcher.find()) {
             String selectorItem = itemMatcher.group(0);
+            crc += selectorItem.length();
             switch (selectorItem.charAt(0)) {
                 case '#':
                     cssSelectorItems.add(new CssIdSelector(selectorItem.substring(1)));
@@ -88,13 +86,14 @@ public class CssSelectorParser {
                 case '+':
                 case '>':
                 case '~':
+                    if (cssSelectorItems.size() == 0) return null;
                     CssSelectorItem lastItem = cssSelectorItems.get(cssSelectorItems.size() - 1);
                     CssSelectorItem currItem = new CssSeparatorSelector(selectorItem.charAt(0));
                     if (lastItem instanceof CssSeparatorSelector) {
                         if (selectorItem.charAt(0) == ' ')
                             break;
                         else if (lastItem.getSeparator() == ' ')
-                            cssSelectorItems.set(cssSelectorItems.size()-1, currItem);
+                            cssSelectorItems.set(cssSelectorItems.size() - 1, currItem);
                         else
                             return null;
                     } else {
@@ -111,6 +110,8 @@ public class CssSelectorParser {
             }
         }
 
+        if (selector.length() != crc)
+            return null;
         return cssSelectorItems;
     }
 
