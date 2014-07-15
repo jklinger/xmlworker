@@ -110,7 +110,7 @@ public class CssSelectorParser {
             }
         }
 
-        if (selector.length() != crc)
+        if (selector.isEmpty() || selector.length() != crc)
             return null;
         return cssSelectorItems;
     }
