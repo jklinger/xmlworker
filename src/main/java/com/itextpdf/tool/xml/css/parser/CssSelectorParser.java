@@ -52,17 +52,16 @@ import java.util.regex.Pattern;
 
 public class CssSelectorParser {
 
-    private static final int a = 1 << 16;
-    private static final int b = 1 << 8;
-    private static final int c = 1;
-
     private static final String selectorPatternString =
-            "(\\*)|([_a-zA-Z][\\w-]*)|(\\.[_a-zA-Z][\\w-]*)|(#[_a-z][\\w-]*)|(\\[[_a-zA-Z][\\w-]*(([~^$*|])?=((\"[\\w-]+\")|([\\w-]+)))?\\])|( )|(\\+)|(>)|(~)";
+            "(\\*)|([_a-zA-Z][\\w-]*)|(\\.[_a-zA-Z][\\w-]*)|(#[_a-z][\\w-]*)|(\\[[_a-zA-Z][\\w-]*(([~^$*|])?=((\"[\\w-]+\")|([\\w-]+)))?\\])|(:[\\w()-]*)|( )|(\\+)|(>)|(~)";
 
     private static final String selectorMatcherString = "(" + selectorPatternString + ")*";
     private static final Pattern selectorPattern = Pattern.compile(selectorPatternString);
     private static final Pattern selectorMatcher = Pattern.compile(selectorMatcherString);
 
+    private static final int a = 1 << 16;
+    private static final int b = 1 << 8;
+    private static final int c = 1;
 
     public static List<CssSelectorItem> createCssSelector(String selector) {
         if (!selectorMatcher.matcher(selector).matches())
@@ -81,6 +80,9 @@ public class CssSelectorParser {
                     break;
                 case '[':
                     cssSelectorItems.add(new CssAttributeSelector(selectorItem));
+                    break;
+                case ':':
+                    cssSelectorItems.add(new CssPseudoSelector(selectorItem));
                     break;
                 case ' ':
                 case '+':
@@ -281,6 +283,32 @@ public class CssSelectorParser {
         }
     }
 
+
+    static class CssPseudoSelector implements CssSelectorItem {
+        private String selector;
+
+        CssPseudoSelector(String selector) {
+            this.selector = selector;
+        }
+
+        public boolean matches(Tag t) {
+            return false;
+        }
+
+        public char getSeparator() {
+            return 0;
+        }
+
+        public int getSpecificity() {
+            return 0;
+        }
+
+        @Override
+        public String toString() {
+            return selector;
+        }
+    }
+
     static class CssSeparatorSelector implements CssSelectorItem {
         private char separator;
 
@@ -299,7 +327,6 @@ public class CssSelectorParser {
         public int getSpecificity() {
             return 0;
         }
-
         @Override
         public String toString() {
             return String.valueOf(separator);
