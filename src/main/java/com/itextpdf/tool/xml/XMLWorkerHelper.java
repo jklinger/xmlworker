@@ -293,7 +293,7 @@ public class XMLWorkerHelper {
      * @param   css     a String containing CSS
      * @return  an ElementList instance
      */
-    public ElementList parseToElementList(String html, String css) throws IOException {
+    public static ElementList parseToElementList(String html, String css) throws IOException {
         // CSS
         CSSResolver cssResolver = new StyleAttrCSSResolver();
         if (css != null) {
