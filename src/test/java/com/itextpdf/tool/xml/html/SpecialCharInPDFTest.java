@@ -75,7 +75,7 @@ import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
  *
  */
 public class SpecialCharInPDFTest {
-    public static final String RESOURCE_TEST_PATH = "./src/test/resources/";
+    public static final String RESOURCE_TEST_PATH = "./target/test-classes/com/itextpdf/tool/xml/html/";
 	public static final String SNIPPETS = "/snippets/";
 
 	  private static final String TEST = "index_";
