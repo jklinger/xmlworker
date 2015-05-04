@@ -1,8 +1,8 @@
 /*
- * $Id$
+ * $Id: 3895c3c03a08e1f595214d8d06b931b2bb4e9961 $
  *
  * This file is part of the iText (R) project.
- * Copyright (c) 1998-2014 iText Group NV
+ * Copyright (c) 1998-2015 iText Group NV
  * Authors: Balder Van Camp, Emiel Ackermann, et al.
  *
  * This program is free software; you can redistribute it and/or modify
