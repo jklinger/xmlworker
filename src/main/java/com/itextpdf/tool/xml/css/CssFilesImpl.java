@@ -1,5 +1,5 @@
 /*
- * $Id: 3874f96e77b5735c5e6e4af5af7c7e12c6ecd46f $
+ * $Id$
  *
  * This file is part of the iText (R) project.
  * Copyright (c) 1998-2015 iText Group NV Authors: Balder Van Camp, Emiel
