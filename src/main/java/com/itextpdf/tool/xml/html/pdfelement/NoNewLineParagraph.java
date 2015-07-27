@@ -52,7 +52,7 @@ import com.itextpdf.text.ListItem;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.api.Indentable;
-import com.itextpdf.tool.xml.html.Image;
+import com.itextpdf.text.Image;
 
 /**
  * A <CODE>NoNewLineParagraph</CODE> is a series of <CODE>Chunk</CODE>s and/or <CODE>Phrases</CODE>.
